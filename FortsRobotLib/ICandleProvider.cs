@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace FortsRobotLib
 {
-    public class Class1
+    public interface ICandleProvider
     {
+        bool Initialize();
+        Candle Current { get; }
+        bool MoveNext();        
     }
 }

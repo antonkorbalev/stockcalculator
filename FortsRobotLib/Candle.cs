@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FortsRobotLib
+{
+    public struct Candle
+    {
+        public DateTime TimeStamp { get; set; }
+        public float Open { get; set; }
+        public float High { get; set; }
+        public float Low { get; set; }
+        public float Close { get; set; }
+        public float Volume { get; set; }
+
+        public static bool operator ==(Candle c1, Candle c2)
+        {
+            return c1.Equals(c2);
+        }
+
+        public static bool operator !=(Candle c1, Candle c2)
+        {
+            return !c1.Equals(c2);
+        }
+    }
+}
