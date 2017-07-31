@@ -15,6 +15,16 @@ namespace FortsRobotLib
         public float Close { get; set; }
         public float Volume { get; set; }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
         public static bool operator ==(Candle c1, Candle c2)
         {
             return c1.Equals(c2);

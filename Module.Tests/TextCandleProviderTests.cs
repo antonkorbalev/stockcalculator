@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FortsRobotLib;
-using System.Diagnostics;
+using FortsRobotLib.CandleProviders;
 
 namespace Module.Tests
 {
     [TestClass]
-    public class FortsRobotLibTests
+    public class TextCandleProviderTests
     {
         [TestMethod]
         public void TestTextCandleProviderInitialization()

@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace FortsRobotLib
+namespace FortsRobotLib.CandleProviders
 {
     public class TextCandleProvider : ICandleProvider, IDisposable
     {

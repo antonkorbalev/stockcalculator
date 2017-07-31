@@ -50,7 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FortsRobotLibTests.cs" />
+    <Compile Include="TestAccAggregatorTests.cs" />
+    <Compile Include="TextCandleProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
