@@ -14,13 +14,19 @@ namespace FortsRobotLib.CandleProviders
         public Candle Current { get; private set; }
         private StreamReader _reader;
 
-        private const string DataPath = @"data\si.dat";
-        private const char Separator = ';';
+        private string _dataPath = @"data\si.dat";
+        private char _separator = ';';
+
+        public void SetTextParams(string path, char separator)
+        {
+            _dataPath = path;
+            _separator = separator;
+        }
 
         public bool Initialize()
         {
             var fPath = Path.Combine(Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location), DataPath);
+                Assembly.GetExecutingAssembly().Location), _dataPath);
             bool success = File.Exists(fPath);
             Trace.Assert(success, string.Format("File not found {0}!",fPath));
             _reader = new StreamReader(fPath);
@@ -31,7 +37,7 @@ namespace FortsRobotLib.CandleProviders
 
         internal Candle GetCandle(string line)
         {
-            var parts = line.Split(Separator);
+            var parts = line.Split(_separator);
             DateTime timeStamp = DateTime.MinValue;
             float[] values = new float[parts.Length - 2];
             Trace.Assert(DateTime.TryParse(string.Format("{0} {1}",parts[0], parts[1]), out timeStamp),"Invalid date format in candle description!");
