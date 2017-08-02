@@ -10,14 +10,15 @@ namespace BasicAlgorithms
 {
     public class BasicAlgorithm : IAlgorithm
     {
-        private float[][] _data;
-        private float[] _paramets;
+        private List<float[]> _data;
+        private float[] _params;
+        private List<Candle> _candles;
 
         public float[][] Data
         {
             get
             {
-                return _data;    
+                return _data.ToArray();    
             }
         }
 
@@ -25,11 +26,11 @@ namespace BasicAlgorithms
         {
             get
             {
-                return _paramets;
+                return _params;
             }
             set
             {
-                _paramets = value;
+                _params = value;
             }
         }
 
@@ -41,14 +42,21 @@ namespace BasicAlgorithms
             }
         }
 
-        public AlgResult Check(Candle candle)
+        public BasicAlgorithm()
         {
-            return AlgResult.Hold;
+            Reset();
         }
 
         public void Reset()
         {
+            _data = new List<float[]>();
+            _params = new float[0];
+            _candles = new List<Candle>();
+        }
 
+        public AlgResult Check(Candle candle)
+        {
+            return AlgResult.Hold;
         }
     }
 }

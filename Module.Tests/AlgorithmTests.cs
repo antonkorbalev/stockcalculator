@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FortsRobotLib.CandleProviders;
 
 namespace Module.Tests
 {
@@ -9,7 +10,10 @@ namespace Module.Tests
         [TestMethod]
         public void TestBasicAlgMatrix()
         {
+            using (var provider = new TextCandleProvider())
+            {
 
+            }
         }
     }
 }
