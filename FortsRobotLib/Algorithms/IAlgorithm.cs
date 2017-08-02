@@ -10,6 +10,7 @@ namespace FortsRobotLib.Algorithms
     public interface IAlgorithm
     {
         string Name { get; }
+        float[] Parameters { get; set; }
         void Reset();
         AlgResult Check(Candle candle);
         float[][] Data { get; }
