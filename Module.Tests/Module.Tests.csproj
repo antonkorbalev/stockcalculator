@@ -58,6 +58,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BasicAlgorithms\BasicAlgorithms.csproj">
+      <Project>{132ed7c0-610e-4a24-b75c-5672ef2406de}</Project>
+      <Name>BasicAlgorithms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FortsRobotLib\FortsRobotLib.csproj">
       <Project>{8eac99ea-6f96-4629-b383-2a35f85016d4}</Project>
       <Name>FortsRobotLib</Name>
@@ -70,6 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\si-9-17.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\basic_data.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

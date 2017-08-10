@@ -1,6 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FortsRobotLib.CandleProviders;
+using BasicAlgorithms;
+using System.Linq;
+using System.IO;
+using FortsRobotLib.AccAggregator;
 
 namespace Module.Tests
 {
@@ -38,12 +42,57 @@ namespace Module.Tests
         {
             using (var provider = new TextCandleProvider())
             {
+                var alg = new BasicAlgorithm(13, 12, 11, 10, 9, 8, 7, 6, 5);
                 provider.SetTextParams("data/si-9-17.dat", ';');
-                while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 8, 11, 0, 0))
+                while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 1, 15, 0, 0))
                 {
                 }
+                Assert.IsTrue(provider.Current.Close == 58054);
+                while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 8, 11, 0, 0))
+                {
+                    alg.Check(provider.Current);
+                }
+                alg.Check(provider.Current);
                 Assert.IsTrue(provider.Current.Close == 58204);
+                using (var reader = new StreamReader("../../data/basic_data.dat"))
+                {
+                    while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 10, 0, 0, 0))
+                    {
+                        var answer = alg.Check(provider.Current);
+                        var data = alg.Data.Last();
+                        var values = reader.ReadLine().Split(';').ToArray();
+                        for (var i = 3; i < 12; i++)
+                        {
+                            Assert.AreEqual(Math.Truncate((data[i-2])), Math.Truncate(float.Parse(values[i])));
+                        }
+                        Assert.AreEqual(Math.Truncate(float.Parse(values[2])), Math.Truncate(data[0]));
+                        System.Diagnostics.Trace.WriteLine(answer);
+                    }
+                }
+                Assert.IsTrue(provider.Current.Close == 58220);
+            }
+        }
 
+        [TestMethod]
+        public void TestBasicAlgProfit()
+        {
+            using (var provider = new TextCandleProvider())
+            {
+                provider.SetTextParams("data/si-9-17.dat", ';');
+                var alg = new BasicAlgorithm(13, 12, 11, 10, 9, 8, 7, 6, 5);
+                var acc = new TestAccAgregator();
+                while (provider.MoveNext())
+                {
+                    var answer = alg.Check(provider.Current);
+                    if (answer == FortsRobotLib.AlgResult.Buy)
+                        acc.Buy(1 - acc.Assets,provider.Current);
+                    if (answer == FortsRobotLib.AlgResult.Sell)
+                        acc.Sell(1 + acc.Assets, provider.Current);
+                    if (answer == FortsRobotLib.AlgResult.Exit)
+                        acc.Close(provider.Current);
+                }
+                acc.Close(provider.Current);
+                Assert.IsTrue(acc.Balance > 0);
             }
         }
     }

@@ -10,7 +10,6 @@ namespace FortsRobotLib
     {
         Buy,
         Sell,
-        Hold,
-        Close
+        Exit
     }
 }
