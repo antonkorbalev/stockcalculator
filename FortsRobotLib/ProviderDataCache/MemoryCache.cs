@@ -12,12 +12,19 @@ namespace FortsRobotLib.ProviderDataCache
     /// This class is used to cache candles from providers
     /// to get faster optimization (a wrapper for providers)
     /// </summary>
-    public class MemoryCache<T> : IProviderMemoryCache<ICandleProvider>
+    public class MemoryCache<T> : IProviderMemoryCache
         where T : ICandleProvider
     {
         private IEnumerable<Candle> _candles;
         private IEnumerator<Candle> _enumerator;
-        private ICandleProvider _provider;
+
+        internal IEnumerable<Candle> Candles
+        {
+            get
+            {
+                return _candles;
+            }
+        }
 
         public Candle Current
         {
@@ -31,14 +38,31 @@ namespace FortsRobotLib.ProviderDataCache
 
         public void Dispose()
         {
-            _provider.Dispose();
             _enumerator.Dispose();
             _candles = null;
         }
 
-        public void Initialize(ICandleProvider provider)
+        /// <summary>
+        /// Caches data from provider
+        /// </summary>
+        /// <param name="provider">Provider</param>
+        public MemoryCache(T provider)
         {
-            _provider = provider;
+            Initialize(provider);
+        }
+
+        /// <summary>
+        /// Caches data from existing memory cache
+        /// </summary>
+        /// <param name="cache"></param>
+        public MemoryCache(MemoryCache<T> cache)
+        {
+            _candles = cache.Candles;
+            _enumerator = _candles.GetEnumerator();
+        }
+
+        private void Initialize(T provider)
+        {
             var candles = new List<Candle>();
             using (provider)
             {
