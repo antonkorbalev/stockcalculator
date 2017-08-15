@@ -11,6 +11,7 @@ namespace FortsRobotLib.Algorithms
     {
         string Name { get; }
         float[] Parameters { get; }
+        void Initialize(float[] parameters);
         void Reset();
         AlgResult Check(Candle candle);
         float[][] Data { get; }

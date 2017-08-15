@@ -5,6 +5,7 @@ using BasicAlgorithms;
 using System.Linq;
 using System.IO;
 using FortsRobotLib.AccAggregator;
+using FortsRobotLib.Algorithms;
 
 namespace Module.Tests
 {
@@ -94,6 +95,15 @@ namespace Module.Tests
                 acc.Close(provider.Current);
                 Assert.IsTrue(acc.Balance > 0);
             }
+        }
+        [TestMethod]
+        public void TestAlgorithmBaseInit()
+        {
+            var alg = new AlgorithmBase();
+            alg.Initialize(new[] { 1f });
+            Assert.AreEqual(alg.Parameters.Length, 1);
+            alg.Initialize(new[] { 1f, 2f, 3f });
+            Assert.AreEqual(alg.Parameters.Length, 1);
         }
     }
 }
