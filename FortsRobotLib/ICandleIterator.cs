@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FortsRobotLib.CandleProviders
+namespace FortsRobotLib
 {
-    public interface ICandleProvider : ICandleIterator
+    public interface ICandleIterator : IDisposable
     {
-        bool Initialize();      
+        Candle Current { get; }
+        bool MoveNext();
     }
 }

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="AlgorithmTests.cs" />
     <Compile Include="TestAccAggregatorTests.cs" />
+    <Compile Include="ProviderMemoryCacheTests.cs" />
     <Compile Include="TextCandleProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

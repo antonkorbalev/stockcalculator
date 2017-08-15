@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FortsRobotLib
 {
+    /// <summary>
+    /// Algorithm result
+    /// </summary>
     public enum AlgResult
     {
         Buy,

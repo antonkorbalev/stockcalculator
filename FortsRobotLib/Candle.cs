@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FortsRobotLib
 {
+    /// <summary>
+    /// Basic candle object
+    /// </summary>
     public struct Candle
     {
         public DateTime TimeStamp { get; set; }

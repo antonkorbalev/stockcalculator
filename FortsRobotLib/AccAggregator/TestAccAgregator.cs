@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FortsRobotLib.AccAggregator
 {
+    /// <summary>
+    /// Account emulator for testing
+    /// </summary>
     public class TestAccAgregator : IAccAgregator
     {
         private List<AccRow> _data;

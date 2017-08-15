@@ -9,7 +9,10 @@ using System.Reflection;
 
 namespace FortsRobotLib.CandleProviders
 {
-    public class TextCandleProvider : ICandleProvider, IDisposable
+    /// <summary>
+    /// An iterator for candles from text file
+    /// </summary>
+    public class TextCandleProvider : ICandleProvider
     {
         public Candle Current { get; private set; }
         private StreamReader _reader;
@@ -17,7 +20,7 @@ namespace FortsRobotLib.CandleProviders
         private string _dataPath = @"data\si.dat";
         private char _separator = ';';
 
-        public void SetTextParams(string path, char separator)
+        public void SetTextParams(string path, char separator = ';')
         {
             _dataPath = path;
             _separator = separator;
