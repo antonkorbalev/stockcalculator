@@ -77,6 +77,7 @@ namespace FortsRobotLib.Calculator
         public void Calculate(Action<CalculationResult[]> onFinish = null)
         {
             IsRunning = true;
+            _cts = new CancellationTokenSource();
             Task.Run(() => 
             {
                 while (_ins.Any())

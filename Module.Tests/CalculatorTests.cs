@@ -40,6 +40,12 @@ namespace Module.Tests
             calc.Wait();
             Assert.AreEqual(2, calc.Results.Length);
             Assert.AreNotEqual(calc.Results.First().Profit, calc.Results.Last().Profit);
+            calc.Reset();
+            calc.AddParamsForCalculation(new float[] { 10, 20, 30});
+            calc.AddParamsForCalculation(new float[] { 5 });
+            calc.Calculate();
+            calc.Wait();
+            Assert.AreEqual(2, calc.Results.Length);
         }
     }
 }
