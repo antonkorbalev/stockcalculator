@@ -96,6 +96,7 @@ namespace Module.Tests
                 Assert.IsTrue(acc.Balance > 0);
             }
         }
+
         [TestMethod]
         public void TestAlgorithmBaseInit()
         {

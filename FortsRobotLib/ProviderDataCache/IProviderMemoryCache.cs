@@ -8,7 +8,7 @@ using FortsRobotLib.CandleProviders;
 namespace FortsRobotLib.ProviderDataCache
 {
     public interface IProviderMemoryCache : ICandleIterator 
-    { 
+    {
         void Reset();
     }
 }

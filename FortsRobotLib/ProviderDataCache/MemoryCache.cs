@@ -54,7 +54,7 @@ namespace FortsRobotLib.ProviderDataCache
         /// <summary>
         /// Caches data from existing memory cache
         /// </summary>
-        /// <param name="cache"></param>
+        /// <param name="cache">Existing cache</param>
         public MemoryCache(MemoryCache<T> cache)
         {
             _candles = cache.Candles;

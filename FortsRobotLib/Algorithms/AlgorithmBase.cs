@@ -8,9 +8,9 @@ namespace FortsRobotLib.Algorithms
 {
     public class AlgorithmBase
     {
-        protected List<Candle> _candles;
+        protected List<Candle> _candles = new List<Candle>();
         protected float[] _params;
-        protected List<float[]> _data;
+        protected List<float[]> _data = new List<float[]>();
 
         public float[] Parameters
         {
