@@ -14,6 +14,7 @@ namespace FortsRobotLib.Calculator
         TestAccAgregator Calculate(float[] parameters);
         void Calculate(Action<CalculationResult[]> onFinish);
         void Wait();
+        void Reset();
         CalculationResult[] Results { get; }
         void AddParamsForCalculation(float[] parameters);
         int ThreadsNum { get; }

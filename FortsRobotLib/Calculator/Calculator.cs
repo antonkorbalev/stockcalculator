@@ -17,12 +17,13 @@ namespace FortsRobotLib.Calculator
         where T : ICandleProvider, new()
         where T1 : IAlgorithm
     {
-        private ManualResetEvent _wait = new ManualResetEvent(false); 
+        private ManualResetEvent _wait = new ManualResetEvent(true); 
         private MemoryCache<T> _cache;
         private int _threadsNum;
         private ConcurrentQueue<float[]> _ins = new ConcurrentQueue<float[]>();
         private List<CalculationResult> _outs = new List<CalculationResult>();
         private bool _isRunning;
+        private CancellationTokenSource _cts = new CancellationTokenSource();
 
         public bool IsRunning
         {
@@ -64,6 +65,15 @@ namespace FortsRobotLib.Calculator
             _wait.WaitOne();
         }
 
+        public void Reset()
+        {
+            _outs.Clear();
+            _isRunning = false;
+            _cts.Cancel();
+            _wait.Set();
+
+        }
+
         public void Calculate(Action<CalculationResult[]> onFinish = null)
         {
             IsRunning = true;
@@ -73,7 +83,7 @@ namespace FortsRobotLib.Calculator
                 {
                     try
                     {
-                        Parallel.For(0, _threadsNum - 1, (i) =>
+                        Parallel.For(0, _threadsNum, (i) =>
                         {
                             float[] parameters;
                             if (_ins.TryDequeue(out parameters))
@@ -91,6 +101,7 @@ namespace FortsRobotLib.Calculator
                     {
                         Trace.Fail(ex.InnerException.Message);    
                     }
+                    _cts.Token.ThrowIfCancellationRequested();
                 }
                 IsRunning = false;
                 if (onFinish != null)

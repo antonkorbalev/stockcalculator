@@ -31,9 +31,11 @@ namespace Module.Tests
         {
             var p = new TextCandleProvider();
             p.SetTextParams(@"data\si-9-17.dat");
-            var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p, 4);
+            var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p,4);
             calc.AddParamsForCalculation(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5 });
             calc.AddParamsForCalculation(new float[] { 5 });
+            // just pass
+            calc.Wait();
             calc.Calculate();
             calc.Wait();
             Assert.AreEqual(2, calc.Results.Length);
