@@ -14,8 +14,8 @@ using System.Threading;
 namespace FortsRobotLib.Calculator
 {
     public class Calculator<T, T1> : ICalculator, IDisposable
-        where T : ICandleProvider, new()
-        where T1 : IAlgorithm
+        where T : ICandleProvider
+        where T1 : IAlgorithm, new()
     {
         private ManualResetEvent _wait = new ManualResetEvent(true); 
         private MemoryCache<T> _cache;

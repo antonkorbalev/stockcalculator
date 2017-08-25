@@ -72,9 +72,8 @@ namespace Module.Tests
                 var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(provider, 5, 30, 4);
                 gen.Select(2);
                 gen.Wait();
-                int pInd;
-                var bestResults = gen.GetBestResults(out pInd);
-                Assert.AreEqual(2, pInd);
+                var bestResults = gen.GetBestResults();
+                Assert.AreEqual(2, gen.PopulationIndex);
             }
         }
 

@@ -15,6 +15,6 @@ namespace FortsRobotLib.Genetics
         bool IsRunning { get; }
         void Cancel();
         void Wait();
-        CalculationResult[] GetBestResults(out int populationIndex);
+        CalculationResult[] GetBestResults();
     }
 }

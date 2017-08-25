@@ -12,8 +12,8 @@ using System.Threading;
 namespace FortsRobotLib.Genetics
 {
     public class GeneticsSelector<T, T1> : IGeneticsSelector
-        where T : ICandleProvider, new()
-        where T1 : IAlgorithm
+        where T : ICandleProvider
+        where T1 : IAlgorithm, new()
     {
         private int _mutationsPercent;
         private int _generationSize;
@@ -80,7 +80,7 @@ namespace FortsRobotLib.Genetics
                 _selectCondition = selectCondition;
             _calculator = new Calculator<T, T1>(provider, threadsNum);
             _wait = new ManualResetEvent(true);
-            _cts = new CancellationTokenSource();
+            _cts = new CancellationTokenSource(); 
         }   
 
         internal float[][] GenerateRandomPopulation()
@@ -131,10 +131,9 @@ namespace FortsRobotLib.Genetics
             ind[i1] = ind[i2] - (ind[i2] = ind[i1]) + ind[i1];
         }
 
-        public CalculationResult[] GetBestResults(out int populationIndex)
+        public CalculationResult[] GetBestResults()
         {
             int aliveCount = _generationSize * _selectionPercent / 100;
-            populationIndex = PopulationIndex;
             return _calculator.Results.OrderByDescending(_selectCondition)
                 .Take(aliveCount).ToArray();
         }
@@ -145,12 +144,13 @@ namespace FortsRobotLib.Genetics
 
             // actions after calculation finishes
             PopulationIndex++;
+            var crossInds = GetBestResults();
             var handler = PopulationCompleted;
             if (handler != null)
                 handler(this, new PopulationCompletedEventArgs()
                 {
                     PopulationIndex = PopulationIndex,
-                    Results = _calculator.Results
+                    Results = crossInds
                 });
             if ((PopulationIndex >= _maxGeneration) || _cts.IsCancellationRequested)
             {
@@ -161,9 +161,6 @@ namespace FortsRobotLib.Genetics
             // select individuals
             var num = 0;
             var newGen = new List<float[]>();
-            int aliveCount = _generationSize * _selectionPercent / 100;
-            var crossInds = _calculator.Results.OrderByDescending(_selectCondition)
-                .Take(aliveCount).ToArray();
             while (num < _generationSize)
             {
                 float[] child1, child2;
