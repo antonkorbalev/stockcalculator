@@ -23,7 +23,7 @@ namespace FortsRobotLib.Calculator
         private ConcurrentQueue<float[]> _ins = new ConcurrentQueue<float[]>();
         private List<CalculationResult> _outs = new List<CalculationResult>();
         private bool _isRunning;
-        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private CancellationTokenSource _cts;
 
         public bool IsRunning
         {
@@ -40,6 +40,7 @@ namespace FortsRobotLib.Calculator
                 _isRunning = value;
             }
         }
+
         public int ThreadsNum
         {
             get
@@ -74,11 +75,11 @@ namespace FortsRobotLib.Calculator
 
         }
 
-        public void Calculate(Action<CalculationResult[]> onFinish = null)
+        public async Task CalculateAsync()
         {
             IsRunning = true;
             _cts = new CancellationTokenSource();
-            Task.Run(() => 
+            await Task.Run(() => 
             {
                 while (_ins.Any())
                 {
@@ -105,8 +106,6 @@ namespace FortsRobotLib.Calculator
                     _cts.Token.ThrowIfCancellationRequested();
                 }
                 IsRunning = false;
-                if (onFinish != null)
-                    onFinish(Results);
             });    
         }
 
@@ -114,6 +113,7 @@ namespace FortsRobotLib.Calculator
         {
             _cache = cache;
             _threadsNum = threadsNum;
+            _cts = new CancellationTokenSource();
         }
 
         public Calculator(T provider, int threadsNum = 1)

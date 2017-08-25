@@ -43,7 +43,7 @@ namespace Module.Tests
         {
             using (var provider = new TextCandleProvider())
             {
-                var alg = new BasicAlgorithm(13, 12, 11, 10, 9, 8, 7, 6, 5);
+                var alg = new BasicAlgorithm(13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13);
                 provider.SetTextParams("data/si-9-17.dat", ';');
                 while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 1, 15, 0, 0))
                 {
@@ -80,7 +80,7 @@ namespace Module.Tests
             using (var provider = new TextCandleProvider())
             {
                 provider.SetTextParams("data/si-9-17.dat", ';');
-                var alg = new BasicAlgorithm(13, 12, 11, 10, 9, 8, 7, 6, 5);
+                var alg = new BasicAlgorithm(5, 5);
                 var acc = new TestAccAgregator();
                 while (provider.MoveNext())
                 {
@@ -104,6 +104,9 @@ namespace Module.Tests
             alg.Initialize(new[] { 1f });
             Assert.AreEqual(alg.Parameters.Length, 1);
             alg.Initialize(new[] { 1f, 2f, 3f });
+            Assert.AreEqual(alg.Parameters.Length, 1);
+            alg.Reset();
+            alg.Initialize(new[] { 1f });
             Assert.AreEqual(alg.Parameters.Length, 1);
         }
     }

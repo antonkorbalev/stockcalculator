@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8EAC99EA-6F96-4629-B383-2A35F85016D4}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{B83CB751-480E-42A8-B579-C36DAC10FB54}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FortsRobotLib</RootNamespace>
-    <AssemblyName>FortsRobotLib</AssemblyName>
+    <RootNamespace>Calculator</RootNamespace>
+    <AssemblyName>Calculator</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,28 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccAggregator\AccRow.cs" />
-    <Compile Include="AccAggregator\IAccAgregator.cs" />
-    <Compile Include="AccAggregator\TestAccAgregator.cs" />
-    <Compile Include="Algorithms\AlgorithmBase.cs" />
-    <Compile Include="Algorithms\IAlgorithm.cs" />
-    <Compile Include="AlgResult.cs" />
-    <Compile Include="Calculator\CalculationResult.cs" />
-    <Compile Include="Calculator\Calculator.cs" />
-    <Compile Include="Calculator\ICalculator.cs" />
-    <Compile Include="Candle.cs" />
-    <Compile Include="CandleProviders\BaseTextCandleProvider.cs" />
-    <Compile Include="CandleProviders\FinamCandleProvider.cs" />
-    <Compile Include="CandleProviders\ICandleProvider.cs" />
-    <Compile Include="Genetics\GeneticsSelector.cs" />
-    <Compile Include="Genetics\IGeneticsSelector.cs" />
-    <Compile Include="Genetics\PopulationCompletedEventArgs.cs" />
-    <Compile Include="ICandleIterator.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CandleProviders\TextCandleProvider.cs" />
-    <Compile Include="ProviderDataCache\IProviderMemoryCache.cs" />
-    <Compile Include="ProviderDataCache\MemoryCache.cs" />
-    <Compile Include="TimePeriod.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BasicAlgorithms\BasicAlgorithms.csproj">
+      <Project>{132ed7c0-610e-4a24-b75c-5672ef2406de}</Project>
+      <Name>BasicAlgorithms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FortsRobotLib\FortsRobotLib.csproj">
+      <Project>{8eac99ea-6f96-4629-b383-2a35f85016d4}</Project>
+      <Name>FortsRobotLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

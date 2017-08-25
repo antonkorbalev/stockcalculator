@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="CalculatorTests.cs" />
     <Compile Include="AlgorithmTests.cs" />
+    <Compile Include="FinamCandleProviderTests.cs" />
+    <Compile Include="GeneticsSelectionTests.cs" />
     <Compile Include="TestAccAggregatorTests.cs" />
     <Compile Include="ProviderMemoryCacheTests.cs" />
     <Compile Include="TextCandleProviderTests.cs" />
@@ -70,17 +72,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\si.dat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Data\si-9-17.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\basic_data.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\si.dat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

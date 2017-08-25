@@ -12,7 +12,7 @@ namespace FortsRobotLib.Calculator
     public interface ICalculator
     {
         TestAccAgregator Calculate(float[] parameters);
-        void Calculate(Action<CalculationResult[]> onFinish);
+        Task CalculateAsync();
         void Wait();
         void Reset();
         CalculationResult[] Results { get; }

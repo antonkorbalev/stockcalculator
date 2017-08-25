@@ -21,7 +21,7 @@ namespace Module.Tests
             var p = new TextCandleProvider();
             p.SetTextParams(@"data\si-9-17.dat");
             var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p, 2);
-            var result = calc.Calculate(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5 });
+            var result = calc.Calculate(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 6, 7, 8,9, 10, 11, 12, 13 });
             Assert.AreEqual(result.Balance, 2379);
             Assert.AreEqual(result.Assets, 0);
         }
@@ -33,17 +33,17 @@ namespace Module.Tests
             p.SetTextParams(@"data\si-9-17.dat");
             var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p,4);
             calc.AddParamsForCalculation(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5 });
-            calc.AddParamsForCalculation(new float[] { 5 });
+            calc.AddParamsForCalculation(new float[] { 5, 5 });
             // just pass
             calc.Wait();
-            calc.Calculate();
+            calc.CalculateAsync();
             calc.Wait();
             Assert.AreEqual(2, calc.Results.Length);
             Assert.AreNotEqual(calc.Results.First().Profit, calc.Results.Last().Profit);
             calc.Reset();
             calc.AddParamsForCalculation(new float[] { 10, 20, 30});
-            calc.AddParamsForCalculation(new float[] { 5 });
-            calc.Calculate();
+            calc.AddParamsForCalculation(new float[] { 5,5 });
+            calc.CalculateAsync();
             calc.Wait();
             Assert.AreEqual(2, calc.Results.Length);
         }

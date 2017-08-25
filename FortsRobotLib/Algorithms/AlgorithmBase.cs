@@ -39,6 +39,13 @@ namespace FortsRobotLib.Algorithms
             }
         }
 
+        public void Reset()
+        {
+            _data = new List<float[]>();
+            _params = null;
+            _candles = new List<Candle>();
+        }
+
         public void Initialize(float[] parameters)
         {
             if (_params == null)

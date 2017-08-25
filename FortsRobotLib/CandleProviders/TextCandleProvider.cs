@@ -12,13 +12,12 @@ namespace FortsRobotLib.CandleProviders
     /// <summary>
     /// An iterator for candles from text file
     /// </summary>
-    public class TextCandleProvider : ICandleProvider
+    public class TextCandleProvider : BaseTextCandleProvider, ICandleProvider
     {
         public Candle Current { get; private set; }
         private StreamReader _reader;
 
         private string _dataPath = @"data\si.dat";
-        private char _separator = ';';
 
         public void SetTextParams(string path, char separator = ';')
         {
@@ -36,29 +35,6 @@ namespace FortsRobotLib.CandleProviders
             // read header
             _reader.ReadLine();
             return success && MoveNext();      
-        }
-
-        internal Candle GetCandle(string line)
-        {
-            var parts = line.Split(_separator);
-            DateTime timeStamp = DateTime.MinValue;
-            float[] values = new float[parts.Length - 2];
-            Trace.Assert(DateTime.TryParse(string.Format("{0} {1}",parts[0], parts[1]), out timeStamp),"Invalid date format in candle description!");
-            int num = 0;
-            foreach (var part in parts.Skip(2))
-            {
-                Trace.Assert(float.TryParse(part, out values[num]), "Invalid number format in candle description!");
-                num++;
-            }
-            return new Candle()
-            {
-                TimeStamp = timeStamp,
-                Open = values[0],
-                High = values[1],
-                Low = values[2],
-                Close = values[3],
-                Volume = values[4]
-            };
         }
 
         public bool MoveNext()

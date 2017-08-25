@@ -18,7 +18,7 @@ namespace Module.Tests
         }
 
         [TestMethod]
-        public void TestReadCandleForTextCandleProvider()
+        public void TestReadCandleForBaseTextCandleProvider()
         {
             using (var provider = new TextCandleProvider())
             {
