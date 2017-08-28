@@ -7,6 +7,7 @@ using System.IO;
 using FortsRobotLib.AccAggregator;
 using FortsRobotLib.Algorithms;
 using FortsRobotLib.Genetics;
+using FortsRobotLib.ProviderDataCache;
 
 namespace Module.Tests
 {
@@ -69,7 +70,7 @@ namespace Module.Tests
             using (var provider = new TextCandleProvider())
             {
                 provider.SetTextParams(@"data\si-9-17.dat");
-                var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(provider, 5, 30, 4);
+                var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(new MemoryCache<TextCandleProvider>(provider), 5, 30, 4);
                 gen.Select(2);
                 gen.Wait();
                 var bestResults = gen.GetBestResults();

@@ -8,6 +8,7 @@ using FortsRobotLib.CandleProviders;
 using FortsRobotLib;
 using BasicAlgorithms;
 using System.IO;
+using FortsRobotLib.ProviderDataCache;
 
 namespace Calculator
 {
@@ -21,21 +22,22 @@ namespace Calculator
             var highDate = new DateTime(2017, 8, 20);
             if (File.Exists(fName))
                 File.Delete(fName);
+            MemoryCache<FinamCandleProvider> cache;
+            using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
+                "14", "19899", lowDate, highDate))
+            {
+                cache = new MemoryCache<FinamCandleProvider>(provider);
+            }
             for (var i = 2; i < 100; i = i + 2)
             {
-                using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
-                "14", "19899", lowDate, highDate))
-                {
-                    num = i;
-                    File.AppendAllLines(fName, new string[] { num.ToString(), "Population;Mean profit;Max profit;" });
-                    Console.WriteLine("Length {0}:", i);
-                    Console.WriteLine("----------------------");
-                    provider.Initialize();
-                    var genSelector = new GeneticsSelector<FinamCandleProvider, BasicAlgorithm>(provider, 3, 100, i);
-                    genSelector.PopulationCompleted += GenSelector_PopulationCompleted;
-                    genSelector.Select(30);
-                    genSelector.Wait();
-                }
+                num = i;
+                File.AppendAllLines(fName, new string[] { num.ToString(), "Population;Mean profit;Max profit;" });
+                Console.WriteLine("Length {0}:", i);
+                Console.WriteLine("----------------------");
+                var genSelector = new GeneticsSelector<FinamCandleProvider, BasicAlgorithm>(cache, 3, 100, i);
+                genSelector.PopulationCompleted += GenSelector_PopulationCompleted;
+                genSelector.Select(30);
+                genSelector.Wait();
             }
         }
 

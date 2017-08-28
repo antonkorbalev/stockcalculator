@@ -8,6 +8,7 @@ using FortsRobotLib.Algorithms;
 using FortsRobotLib.Calculator;
 using System.Diagnostics;
 using System.Threading;
+using FortsRobotLib.ProviderDataCache;
 
 namespace FortsRobotLib.Genetics
 {
@@ -58,13 +59,10 @@ namespace FortsRobotLib.Genetics
             _cts.Cancel();
         }
 
-        /// <summary>
-        /// Genetics selection algorithm
-        /// </summary>
-        public GeneticsSelector(T provider, int lowParamBorder,
-            int highParamBorder, int paramsCount, int threadsNum = 4, 
-            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5,
-            Func<CalculationResult, float> selectCondition = null)
+        private void Initialize(int lowParamBorder,
+            int highParamBorder, int paramsCount, int threadsNum,
+            int generationSize, int selectionPercent, int mutationsPercent,
+            Func<CalculationResult, float> selectCondition)
         {
             _generationSize = generationSize;
             _selectionPercent = selectionPercent;
@@ -78,10 +76,29 @@ namespace FortsRobotLib.Genetics
                 _selectCondition = new Func<CalculationResult, float>(o => o.Profit);
             else
                 _selectCondition = selectCondition;
-            _calculator = new Calculator<T, T1>(provider, threadsNum);
             _wait = new ManualResetEvent(true);
-            _cts = new CancellationTokenSource(); 
-        }   
+            _cts = new CancellationTokenSource();
+        }
+
+        public GeneticsSelector(T provider, int lowParamBorder,
+            int highParamBorder, int paramsCount, int threadsNum = 4,
+            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5,
+            Func<CalculationResult, float> selectCondition = null)
+        {
+            Initialize(lowParamBorder, highParamBorder, paramsCount, threadsNum, generationSize,
+                selectionPercent, mutationsPercent, selectCondition);
+            _calculator = new Calculator<T, T1>(provider, threadsNum);
+        }
+
+        public GeneticsSelector(MemoryCache<T> cache, int lowParamBorder,
+            int highParamBorder, int paramsCount, int threadsNum = 4,
+            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5,
+            Func<CalculationResult, float> selectCondition = null)
+        {
+            Initialize(lowParamBorder, highParamBorder, paramsCount, threadsNum, generationSize,
+                selectionPercent, mutationsPercent, selectCondition);
+            _calculator = new Calculator<T, T1>(cache, threadsNum);
+        }
 
         internal float[][] GenerateRandomPopulation()
         {
@@ -95,7 +112,7 @@ namespace FortsRobotLib.Genetics
             }
             return result;
         }
-        
+
         internal void Cross(float[] parent1, float[] parent2, out float[] child1, out float[] child2)
         {
             child1 = null;
@@ -116,7 +133,7 @@ namespace FortsRobotLib.Genetics
                 {
                     child1[i] = parent1[i];
                     child2[i] = parent2[i];
-                }                   
+                }
         }
 
         internal void Mutate(float[] ind)
@@ -164,7 +181,7 @@ namespace FortsRobotLib.Genetics
             while (num < _generationSize)
             {
                 float[] child1, child2;
-                Cross(crossInds[_rand.Next(crossInds.Length)].Parameters, crossInds[_rand.Next(crossInds.Length)].Parameters, 
+                Cross(crossInds[_rand.Next(crossInds.Length)].Parameters, crossInds[_rand.Next(crossInds.Length)].Parameters,
                     out child1, out child2);
                 newGen.Add(child1);
                 newGen.Add(child2);
@@ -183,7 +200,7 @@ namespace FortsRobotLib.Genetics
                 _calculator.AddParamsForCalculation(ind);
 
             // calculate
-            await CalculateNextPopulation(); 
+            await CalculateNextPopulation();
         }
 
         public async void Select(int maxGeneration)
