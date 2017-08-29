@@ -151,7 +151,7 @@ namespace FortsRobotLib.Genetics
         public CalculationResult[] GetBestResults()
         {
             int aliveCount = _generationSize * _selectionPercent / 100;
-            return _calculator.Results.OrderByDescending(_selectCondition).ThenByDescending(o => o.Profit)
+            return _calculator.Results.OrderByDescending(_selectCondition).ThenByDescending(o => o.Balance)
                 .Take(aliveCount).ToArray();
         }
 

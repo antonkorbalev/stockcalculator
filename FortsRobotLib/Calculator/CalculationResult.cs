@@ -8,7 +8,7 @@ namespace FortsRobotLib.Calculator
 {
     public class CalculationResult
     {
-        public float Profit { get; set; }
+        public float Balance { get; set; }
         public float SharpIndex { get; set; }
         public float[] Parameters { get; set; }
         public float MeanProfit { get; set; }

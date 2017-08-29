@@ -40,11 +40,11 @@ namespace Calculator
                 File.AppendAllLines(Settings.Default.ResultsFileName,
                     new string[]
                     {
-                        string.Format("{0};{1};{2};{3};{4};{5};",
+                        string.Format("{0};{1};{2};{3};{4};{5};{6};{7};",
                         string.Join(",", result.Parameters),
                         genSelector.PopulationIndex,
                         result.SharpIndex,
-                        result.Profit,
+                        result.Balance,
                         result.MeanProfit,
                         result.MeanPositiveProfit,
                         result.MeanNegativeProfit,
@@ -57,7 +57,7 @@ namespace Calculator
         private static void GenSelector_PopulationCompleted(object sender, PopulationCompletedEventArgs e)
         {
             Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}, mean +profit = {6}, mean -profit = {7}",
-                num, e.PopulationIndex, e.Results.First().Profit,
+                num, e.PopulationIndex, e.Results.First().Balance,
                 e.Results.First().SharpIndex, e.Results.First().MeanProfit,
                 e.Results.First().SuccessRatio, e.Results.First().MeanPositiveProfit, e.Results.First().MeanNegativeProfit);
         }

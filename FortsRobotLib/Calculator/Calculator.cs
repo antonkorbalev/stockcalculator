@@ -94,7 +94,7 @@ namespace FortsRobotLib.Calculator
                                 _outs.Add(new CalculationResult()
                                 {
                                     Parameters = parameters,
-                                    Profit = result.Balance,
+                                    Balance = result.Balance,
                                     SharpIndex = result.SharpIndex,
                                     MeanProfit = result.MeanProfit,
                                     SuccessRatio = result.SuccessRatio,

@@ -39,7 +39,7 @@ namespace Module.Tests
             calc.CalculateAsync();
             calc.Wait();
             Assert.AreEqual(2, calc.Results.Length);
-            Assert.AreNotEqual(calc.Results.First().Profit, calc.Results.Last().Profit);
+            Assert.AreNotEqual(calc.Results.First().Balance, calc.Results.Last().Balance);
             calc.Reset();
             calc.AddParamsForCalculation(new float[] { 10, 20, 30});
             calc.AddParamsForCalculation(new float[] { 5,5 });
