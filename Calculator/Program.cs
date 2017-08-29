@@ -26,7 +26,7 @@ namespace Calculator
             {
                 cache = new MemoryCache<FinamCandleProvider>(provider);
             }
-            File.AppendAllLines(Settings.Default.ResultsFileName, new string[] { "Parameters;Populations total;Sharp Index;Profit;Mean profit per deal; Success %;" });
+            File.AppendAllLines(Settings.Default.ResultsFileName, new string[] { "Parameters;Populations total;Sharp Index;Profit;Mean profit per deal;Mean +profit per deal;Mean -profit per deal;Success %;" });
             for (var i = Settings.Default.ParamsCountFrom; i < Settings.Default.ParamsCountTo; i = i + 2)
             {
                 num = i;
@@ -46,6 +46,8 @@ namespace Calculator
                         result.SharpIndex,
                         result.Profit,
                         result.MeanProfit,
+                        result.MeanPositiveProfit,
+                        result.MeanNegativeProfit,
                         result.SuccessRatio )
                     });
             }
@@ -54,10 +56,10 @@ namespace Calculator
 
         private static void GenSelector_PopulationCompleted(object sender, PopulationCompletedEventArgs e)
         {
-            Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}",
+            Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}, mean +profit = {6}, mean -profit = {7}",
                 num, e.PopulationIndex, e.Results.First().Profit,
                 e.Results.First().SharpIndex, e.Results.First().MeanProfit,
-                e.Results.First().SuccessRatio);
+                e.Results.First().SuccessRatio, e.Results.First().MeanPositiveProfit, e.Results.First().MeanNegativeProfit);
         }
     }
 }

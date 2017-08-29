@@ -12,6 +12,8 @@ namespace FortsRobotLib.Calculator
         public float SharpIndex { get; set; }
         public float[] Parameters { get; set; }
         public float MeanProfit { get; set; }
+        public float MeanPositiveProfit { get; set; }
+        public float MeanNegativeProfit { get; set; }
         public float SuccessRatio { get; set; }
     }
 }

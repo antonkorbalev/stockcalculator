@@ -91,6 +91,24 @@ namespace Module.Tests
         public void TestAccAggregatorSharpIndex()
         {
             var acc = new TestAccAgregator();
+            var candle = new Candle();
+            acc.Buy(5, candle);
+            candle.Close = 10;
+            acc.Close(candle);
+            candle.Close = 5;
+            acc.Sell(1, candle);
+            candle.Close = 2;
+            acc.Sell(2, candle);
+            candle.Close = 3;
+            acc.Buy(3, candle);
+            Assert.AreEqual(acc.Balance, acc.Profits.Sum());
+            Assert.IsTrue(acc.SharpIndex > 0.4 && acc.SharpIndex < 0.41);
+        }
+
+        [TestMethod]
+        public void TestAccAggregatorProfits()
+        {
+            var acc = new TestAccAgregator();
             var candle = new Candle()
             {
                 Close = 1
@@ -109,10 +127,10 @@ namespace Module.Tests
             candle.Close = 3;
             acc.Buy(3, candle);
             Assert.AreEqual(-3, acc.Profits[2]);
-            Assert.AreEqual(acc.Balance, acc.Profits.Sum());
-            Assert.IsTrue(acc.SharpIndex > 0.4 && acc.SharpIndex < 0.41);
             Assert.AreEqual(15, acc.MeanProfit);
-            Assert.AreEqual((float)2/3, acc.SuccessRatio);
+            Assert.AreEqual((float)2 / 3, acc.SuccessRatio);
+            Assert.AreEqual(-3, acc.MeanNegativeProfit);
+            Assert.AreEqual(24, acc.MeanPositiveProfit);
         }
     }
 }

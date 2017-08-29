@@ -97,7 +97,9 @@ namespace FortsRobotLib.Calculator
                                     Profit = result.Balance,
                                     SharpIndex = result.SharpIndex,
                                     MeanProfit = result.MeanProfit,
-                                    SuccessRatio = result.SuccessRatio
+                                    SuccessRatio = result.SuccessRatio,
+                                    MeanNegativeProfit = result.MeanNegativeProfit,
+                                    MeanPositiveProfit = result.MeanPositiveProfit
                                 });
                             }
                         });
