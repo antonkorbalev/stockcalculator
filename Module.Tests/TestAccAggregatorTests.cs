@@ -112,7 +112,7 @@ namespace Module.Tests
             Assert.AreEqual(acc.Balance, acc.Profits.Sum());
             Assert.IsTrue(acc.SharpIndex > 0.4 && acc.SharpIndex < 0.41);
             Assert.AreEqual(15, acc.MeanProfit);
-            Assert.AreEqual(0.66, acc.SuccessRatio);
+            Assert.AreEqual((float)2/3, acc.SuccessRatio);
         }
     }
 }
