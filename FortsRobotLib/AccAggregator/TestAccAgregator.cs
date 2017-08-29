@@ -24,7 +24,7 @@ namespace FortsRobotLib.AccAggregator
             {
                 if ((_profits == null) || (!_profits.Any()))
                     return 0;
-                return _profits.Where(o => o > 0).Count() / _profits.Count();
+                return (float)_profits.Where(o => o > 0).Count() / _profits.Count();
             }
         }
 
