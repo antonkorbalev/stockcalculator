@@ -73,7 +73,7 @@ namespace FortsRobotLib.Genetics
 
             // select condition for individuals
             if (selectCondition == null)
-                _selectCondition = new Func<CalculationResult, float>(o => o.Profit);
+                _selectCondition = new Func<CalculationResult, float>(o => o.SharpIndex);
             else
                 _selectCondition = selectCondition;
             _wait = new ManualResetEvent(true);
@@ -151,7 +151,7 @@ namespace FortsRobotLib.Genetics
         public CalculationResult[] GetBestResults()
         {
             int aliveCount = _generationSize * _selectionPercent / 100;
-            return _calculator.Results.OrderByDescending(_selectCondition)
+            return _calculator.Results.OrderByDescending(_selectCondition).ThenByDescending(o => o.Profit)
                 .Take(aliveCount).ToArray();
         }
 

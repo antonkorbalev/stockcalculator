@@ -16,6 +16,9 @@ namespace FortsRobotLib.AccAggregator
         float Balance { get; }
         void Reset();
         AccRow[] Data { get; }
-
+        float[] Profits { get; }
+        float SharpIndex { get; }
+        float MeanProfit { get; }
+        float SuccessRatio { get; }
     }
 }

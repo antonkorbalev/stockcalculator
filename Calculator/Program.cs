@@ -9,43 +9,55 @@ using FortsRobotLib;
 using BasicAlgorithms;
 using System.IO;
 using FortsRobotLib.ProviderDataCache;
+using Calculator.Properties;
 
 namespace Calculator
 {
     class Program
     {
         static int num;
-        static string fName = "Results.txt";
         static void Main(string[] args)
         {
-            var lowDate = new DateTime(2017, 1, 11);
-            var highDate = new DateTime(2017, 8, 20);
-            if (File.Exists(fName))
-                File.Delete(fName);
+            if (File.Exists(Settings.Default.ResultsFileName))
+                File.Delete(Settings.Default.ResultsFileName);
             MemoryCache<FinamCandleProvider> cache;
-            using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
-                "14", "19899", lowDate, highDate))
+            using (var provider = new FinamCandleProvider(Settings.Default.InsName, Settings.Default.TimePeriod,
+                Settings.Default.MarketCode, Settings.Default.InsCode, Settings.Default.DateFrom, Settings.Default.DateTo))
             {
                 cache = new MemoryCache<FinamCandleProvider>(provider);
             }
-            for (var i = 2; i < 100; i = i + 2)
+            File.AppendAllLines(Settings.Default.ResultsFileName, new string[] { "Parameters;Populations total;Sharp Index;Profit;Mean profit per deal; Success %;" });
+            for (var i = Settings.Default.ParamsCountFrom; i < Settings.Default.ParamsCountTo; i = i + 2)
             {
                 num = i;
-                File.AppendAllLines(fName, new string[] { num.ToString(), "Population;Mean profit;Max profit;" });
                 Console.WriteLine("Length {0}:", i);
                 Console.WriteLine("----------------------");
-                var genSelector = new GeneticsSelector<FinamCandleProvider, BasicAlgorithm>(cache, 3, 100, i);
+                var genSelector = new GeneticsSelector<FinamCandleProvider, BasicAlgorithm>(cache, 3, 100, i, generationSize: Settings.Default.GenerationSize, threadsNum: Settings.Default.ThreadsCount);
                 genSelector.PopulationCompleted += GenSelector_PopulationCompleted;
-                genSelector.Select(30);
+                genSelector.Select(Settings.Default.PopulationsCount);
                 genSelector.Wait();
+                var result = genSelector.GetBestResults().First();
+                File.AppendAllLines(Settings.Default.ResultsFileName,
+                    new string[]
+                    {
+                        string.Format("{0};{1};{2};{3};{4};{5};",
+                        string.Join(",", result.Parameters),
+                        genSelector.PopulationIndex,
+                        result.SharpIndex,
+                        result.Profit,
+                        result.MeanProfit,
+                        result.SuccessRatio )
+                    });
             }
+            Console.ReadLine();
         }
 
         private static void GenSelector_PopulationCompleted(object sender, PopulationCompletedEventArgs e)
         {
-            var mean = e.Results.Select(o => o.Profit).Sum() / e.Results.Length;
-            Console.WriteLine("{0}: iteration {1}, mean profit {2}, max profit = {3}", num, e.PopulationIndex, mean, e.Results.Max(o => o.Profit));
-            File.AppendAllLines(fName, new string[] { string.Format("{0};{1};{2}", e.PopulationIndex, mean, e.Results.Max(o => o.Profit)) });
+            Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}",
+                num, e.PopulationIndex, e.Results.First().Profit,
+                e.Results.First().SharpIndex, e.Results.First().MeanProfit,
+                e.Results.First().SuccessRatio);
         }
     }
 }

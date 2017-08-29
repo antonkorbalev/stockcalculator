@@ -1,0 +1,42 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Calculator.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DateFrom" Type="System.DateTime" Scope="Application">
+      <Value Profile="(Default)">2017-01-01</Value>
+    </Setting>
+    <Setting Name="DateTo" Type="System.DateTime" Scope="Application">
+      <Value Profile="(Default)">2017-08-20</Value>
+    </Setting>
+    <Setting Name="ResultsFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">results.txt</Value>
+    </Setting>
+    <Setting Name="ParamsCountFrom" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="ParamsCountTo" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="GenerationSize" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="TimePeriod" Type="FortsRobotLib.TimePeriod" Scope="Application">
+      <Value Profile="(Default)">Hour</Value>
+    </Setting>
+    <Setting Name="ThreadsCount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="InsName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SPFB.SI</Value>
+    </Setting>
+    <Setting Name="MarketCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">14</Value>
+    </Setting>
+    <Setting Name="InsCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">19899</Value>
+    </Setting>
+    <Setting Name="PopulationsCount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

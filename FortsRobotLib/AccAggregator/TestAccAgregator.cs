@@ -15,6 +15,46 @@ namespace FortsRobotLib.AccAggregator
         private float _money;
         private int _assetsCount;
         private float _assetPrice;
+        private List<float> _profits;
+        private float _lastDealBal;
+
+        public float SuccessRatio
+        {
+            get
+            {
+                if ((_profits == null) || (!_profits.Any()))
+                    return 0;
+                return _profits.Where(o => o > 0).Count() / _profits.Count();
+            }
+        }
+
+        public float MeanProfit
+        {
+            get
+            {
+                if ((_profits == null) || (!_profits.Any()))
+                    return 0;
+                return _profits.Sum() / _profits.Count();
+            }
+        }
+        public float SharpIndex
+        {
+            get
+            {
+                if ((_profits == null) || (!_profits.Any()))
+                    return 0;
+                var mean = MeanProfit;
+                return mean / 
+                    (float)Math.Sqrt(_profits.Select(o => (o - mean) * (o - mean)).Sum());
+            }
+        }
+        public float[] Profits
+        {
+            get
+            {
+                return _profits.ToArray();
+            }
+        }
 
         public int Assets
         {
@@ -52,6 +92,7 @@ namespace FortsRobotLib.AccAggregator
         public void Reset()
         {
             _data = new List<AccRow>();
+            _profits = new List<float>();
             _assetsCount = 0;
             _money = 0;
             _assetPrice = 0;
@@ -61,7 +102,11 @@ namespace FortsRobotLib.AccAggregator
         {
             _money = _money - amount * candle.Close;
             _assetsCount += amount;
-            Pass(candle);    
+            Pass(candle);
+            var profit = getBalance() - _lastDealBal;
+            if (profit != 0)
+                _profits.Add(profit);
+            _lastDealBal = getBalance();   
         }
 
         public void Sell(int amount, Candle candle)
@@ -69,6 +114,10 @@ namespace FortsRobotLib.AccAggregator
             _money = _money + amount * candle.Close;
             _assetsCount -= amount;
             Pass(candle);
+            var profit = getBalance() - _lastDealBal;
+            if (profit!=0)
+                _profits.Add(profit);
+            _lastDealBal = getBalance();
         }
 
         public void Close(Candle candle)
