@@ -25,7 +25,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017-01-01")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-05-01")]
         public global::System.DateTime DateFrom {
             get {
                 return ((global::System.DateTime)(this["DateFrom"]));

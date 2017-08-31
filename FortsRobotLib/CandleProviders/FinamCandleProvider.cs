@@ -11,7 +11,7 @@ namespace FortsRobotLib.CandleProviders
     public class FinamCandleProvider : BaseTextCandleProvider, ICandleProvider
     {
         private const string DateTemplate = "dd/MM/yy HH:mm";
-        private const string DownloadLink = "http://export.finam.ru/data.txt?market={0}&em={1}&code={2}&df={3}&mf={4}&yf={5}&dt={6}&mt={7}&yt={8}&p={9}data&e=.txt&dtf=4&tmf=4&MSOR=1&sep=3&sep1=1&datf=5&at=0";
+        private const string DownloadLink = "http://export.finam.ru/data.txt?market={0}&em={1}&code={2}&df={3}&mf={4}&yf={5}&dt={6}&mt={7}&yt={8}&p={9}&e=.txt&dtf=4&tmf=4&MSOR=1&sep=3&sep1=1&datf=5&at=0";
         private string _ticker;
         private TimePeriod _period;
         private string _marketCode;
@@ -57,7 +57,7 @@ namespace FortsRobotLib.CandleProviders
             var link = string.Format(DownloadLink,
             _marketCode, _insCode,
             _ticker, _dateFrom.Day, (_dateFrom.Month - 1), _dateFrom.Year,
-            _dateTo.Day, (_dateTo.Month - 1), _dateTo.Year, (_period + 2));
+            _dateTo.Day, (_dateTo.Month - 1), _dateTo.Year, ((int)_period + 2));
             var req = (HttpWebRequest)WebRequest.Create(link);
             req.Timeout = int.MaxValue;
             var resp = (HttpWebResponse)req.GetResponse();

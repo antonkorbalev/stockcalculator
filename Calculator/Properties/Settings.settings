@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DateFrom" Type="System.DateTime" Scope="Application">
-      <Value Profile="(Default)">2017-01-01</Value>
+      <Value Profile="(Default)">2017-05-01</Value>
     </Setting>
     <Setting Name="DateTo" Type="System.DateTime" Scope="Application">
       <Value Profile="(Default)">2017-08-20</Value>
