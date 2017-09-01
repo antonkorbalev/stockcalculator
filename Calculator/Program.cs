@@ -6,60 +6,47 @@ using System.Threading.Tasks;
 using FortsRobotLib.Genetics;
 using FortsRobotLib.CandleProviders;
 using FortsRobotLib;
-using BasicAlgorithms;
 using System.IO;
 using FortsRobotLib.ProviderDataCache;
 using Calculator.Properties;
+using System.Reflection;
+using FortsRobotLib.Algorithms;
 
 namespace Calculator
 {
     class Program
     {
-        static int num;
+
         static void Main(string[] args)
         {
-            if (File.Exists(Settings.Default.ResultsFileName))
-                File.Delete(Settings.Default.ResultsFileName);
-            MemoryCache<FinamCandleProvider> cache;
-            using (var provider = new FinamCandleProvider(Settings.Default.InsName, Settings.Default.TimePeriod,
-                Settings.Default.MarketCode, Settings.Default.InsCode, Settings.Default.DateFrom, Settings.Default.DateTo))
+            Type algType = null;
+            var searchPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            foreach (var file in Directory.GetFiles(searchPath, "*.dll"))
             {
-                cache = new MemoryCache<FinamCandleProvider>(provider);
-            }
-            File.AppendAllLines(Settings.Default.ResultsFileName, new string[] { "Parameters;Populations total;Sharp Index;Profit;Mean profit per deal;Mean +profit per deal;Mean -profit per deal;Success %;" });
-            for (var i = Settings.Default.ParamsCountFrom; i < Settings.Default.ParamsCountTo; i = i + 2)
-            {
-                num = i;
-                Console.WriteLine("Length {0}:", i);
-                Console.WriteLine("----------------------");
-                var genSelector = new GeneticsSelector<FinamCandleProvider, BasicAlgorithm>(cache, 3, 100, i, generationSize: Settings.Default.GenerationSize, threadsNum: Settings.Default.ThreadsCount);
-                genSelector.PopulationCompleted += GenSelector_PopulationCompleted;
-                genSelector.Select(Settings.Default.PopulationsCount);
-                genSelector.Wait();
-                var result = genSelector.GetBestResults().First();
-                File.AppendAllLines(Settings.Default.ResultsFileName,
-                    new string[]
-                    {
-                        string.Format("{0};{1};{2};{3};{4};{5};{6};{7};",
-                        string.Join(",", result.Parameters),
-                        genSelector.PopulationIndex,
-                        result.SharpIndex,
-                        result.Balance,
-                        result.MeanProfit,
-                        result.MeanPositiveProfit,
-                        result.MeanNegativeProfit,
-                        result.SuccessRatio )
-                    });
-            }
-            Console.ReadLine();
-        }
+                algType = Assembly.LoadFrom(file).GetTypes()
+                    .FirstOrDefault(o => 
+                    o.Name == Settings.Default.AlgorithmName
+                    && o.BaseType == typeof(AlgorithmBase));
+                if (algType != null)
+                {
+                    var inst = Activator.CreateInstance(algType) as IAlgorithm;
+                    if (inst != null)
+                        break;
+                    else
+                        algType = null;
+                }  
+            }    
 
-        private static void GenSelector_PopulationCompleted(object sender, PopulationCompletedEventArgs e)
-        {
-            Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}, mean +profit = {6}, mean -profit = {7}",
-                num, e.PopulationIndex, e.Results.First().Balance,
-                e.Results.First().SharpIndex, e.Results.First().MeanProfit,
-                e.Results.First().SuccessRatio, e.Results.First().MeanPositiveProfit, e.Results.First().MeanNegativeProfit);
+            if (algType == null)
+            {
+                Console.WriteLine("Algorithm not found.");
+                Console.ReadLine();
+                return;
+            }
+
+            var calc = (IRealTimeCalculator) Activator.CreateInstance(typeof(RealTimeCalculator<>)
+                .MakeGenericType(algType));
+            calc.Calculate();
         }
     }
 }
