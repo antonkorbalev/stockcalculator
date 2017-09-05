@@ -6,6 +6,7 @@ using System.Linq;
 using System.IO;
 using FortsRobotLib.AccAggregator;
 using FortsRobotLib.Algorithms;
+using FortsRobotLib;
 
 namespace Module.Tests
 {
@@ -34,7 +35,7 @@ namespace Module.Tests
                         Assert.IsTrue(curr.Open == 60076 && curr.Close == 59940 && curr.High == 60109 && curr.Low == 59940);
                     }
                 }
-                Assert.IsTrue(provider.Current.TimeStamp > new DateTime(2017, 8,2));    
+                Assert.IsTrue(provider.Current.TimeStamp > new DateTime(2017, 8, 2));
             }
         }
 
@@ -64,7 +65,7 @@ namespace Module.Tests
                         var values = reader.ReadLine().Split(';').ToArray();
                         for (var i = 3; i < 12; i++)
                         {
-                            Assert.AreEqual(Math.Truncate((data[i-2])), Math.Truncate(float.Parse(values[i])));
+                            Assert.AreEqual(Math.Truncate((data[i - 2])), Math.Truncate(float.Parse(values[i])));
                         }
                         Assert.AreEqual(Math.Truncate(float.Parse(values[2])), Math.Truncate(data[0]));
                         System.Diagnostics.Trace.WriteLine(answer);
@@ -86,7 +87,7 @@ namespace Module.Tests
                 {
                     var answer = alg.Check(provider.Current);
                     if (answer == FortsRobotLib.AlgResult.Buy)
-                        acc.Buy(1 - acc.Assets,provider.Current);
+                        acc.Buy(1 - acc.Assets, provider.Current);
                     if (answer == FortsRobotLib.AlgResult.Sell)
                         acc.Sell(1 + acc.Assets, provider.Current);
                     if (answer == FortsRobotLib.AlgResult.Exit)
@@ -108,6 +109,35 @@ namespace Module.Tests
             alg.Reset();
             alg.Initialize(new[] { 1f });
             Assert.AreEqual(alg.Parameters.Length, 1);
+        }
+
+        [TestMethod]
+        public void TestGuppiAlgData()
+        {
+            using (var provider = new TextCandleProvider())
+            {
+                provider.SetTextParams("data/si-9-17.dat", ';');
+                var alg = new GuppiAlgorithm(4, 6, 9, 13, 31, 36, 41, 46, 51, 61);
+                var acc = new TestAccAgregator();
+                for (var i = 0; i < 61; i++)
+                {
+                    provider.MoveNext();
+                    var res = alg.Check(provider.Current);
+                    Assert.IsTrue(res == AlgResult.Exit && !alg.Data.Last().Any());
+                }
+                while (provider.MoveNext())
+                {
+                    var answer = alg.Check(provider.Current);
+                    if (answer == FortsRobotLib.AlgResult.Buy)
+                        acc.Buy(1 - acc.Assets, provider.Current);
+                    if (answer == FortsRobotLib.AlgResult.Sell)
+                        acc.Sell(1 + acc.Assets, provider.Current);
+                    if (answer == FortsRobotLib.AlgResult.Exit)
+                        acc.Close(provider.Current);
+                    Assert.IsTrue(alg.Data.Last().Length == 10 + 10 + 8 + 1);
+                }
+                Assert.IsTrue(acc.Balance > 0);
+            }
         }
     }
 }

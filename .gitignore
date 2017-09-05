@@ -242,3 +242,4 @@ ModelManifest.xml
 .fake/
 /BasicAlgorithms/BasicAlgorithm.cs
 /BasicAlgorithms/BasicAlgorithm.cs
+/BasicAlgorithms/GuppiAlgorithm.cs
