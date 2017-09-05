@@ -19,15 +19,16 @@ namespace Calculator
         private int _num;
         public void Calculate()
         {
-            if (File.Exists(Settings.Default.ResultsFileName))
-                File.Delete(Settings.Default.ResultsFileName);
+            var fName = string.Format("{0}_{1}", typeof(T).Name, Settings.Default.ResultsFileName);
+            if (File.Exists(fName))
+                File.Delete(fName);
             MemoryCache<FinamCandleProvider> cache;
             using (var provider = new FinamCandleProvider(Settings.Default.InsName, Settings.Default.TimePeriod,
                 Settings.Default.MarketCode, Settings.Default.InsCode, Settings.Default.DateFrom, Settings.Default.DateTo))
             {
                 cache = new MemoryCache<FinamCandleProvider>(provider);
             }
-            File.AppendAllLines(Settings.Default.ResultsFileName, new string[] { "Parameters;Populations total;Sharp Index;Profit;Mean profit per deal;Mean +profit per deal;Mean -profit per deal;Success %;" });
+            File.AppendAllLines(fName, new string[] { "Parameters;Populations total;Sharp Index;Profit;Mean profit per deal;Mean +profit per deal;Mean -profit per deal;Success %;" });
             for (var i = Settings.Default.ParamsCountFrom; i < Settings.Default.ParamsCountTo; i = i + 2)
             {
                 _num = i;
@@ -38,7 +39,7 @@ namespace Calculator
                 genSelector.Select(Settings.Default.PopulationsCount);
                 genSelector.Wait();
                 var result = genSelector.GetBestResults().First();
-                File.AppendAllLines(Settings.Default.ResultsFileName,
+                File.AppendAllLines(fName,
                     new string[]
                     {
                         string.Format("{0};{1};{2};{3};{4};{5};{6};{7};",

@@ -19,33 +19,34 @@ namespace Calculator
 
         static void Main(string[] args)
         {
-            Type algType = null;
+            List<Type> algTypes = new List<Type>();
             var searchPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             foreach (var file in Directory.GetFiles(searchPath, "*.dll"))
             {
-                algType = Assembly.LoadFrom(file).GetTypes()
-                    .FirstOrDefault(o => 
-                    o.Name == Settings.Default.AlgorithmName
-                    && o.BaseType == typeof(AlgorithmBase));
-                if (algType != null)
-                {
-                    var inst = Activator.CreateInstance(algType) as IAlgorithm;
-                    if (inst != null)
-                        break;
-                    else
-                        algType = null;
-                }  
+                algTypes.AddRange(Assembly.LoadFrom(file).GetTypes()
+                    .Where(o =>
+                    o.BaseType == typeof(AlgorithmBase)
+                    && typeof(IAlgorithm).IsAssignableFrom(o)));
             }    
 
-            if (algType == null)
+            Console.WriteLine("=== Found {0} algorithms ===", algTypes.Count());
+            for (var i = 1; i <= algTypes.Count(); i++)
+                Console.WriteLine(" {0}) {1}", i, algTypes[i - 1].Name);
+            Console.WriteLine();
+            Console.Write(" Select algorithm: ");
+            int num;
+            int.TryParse(Console.ReadLine(), out num);
+            Console.WriteLine();
+
+            if (num < 1 || num > algTypes.Count())
             {
-                Console.WriteLine("Algorithm not found.");
+                Console.WriteLine("Incorrect choice.");
                 Console.ReadLine();
                 return;
             }
 
             var calc = (IRealTimeCalculator) Activator.CreateInstance(typeof(RealTimeCalculator<>)
-                .MakeGenericType(algType));
+                .MakeGenericType(algTypes[num-1]));
             calc.Calculate();
         }
     }

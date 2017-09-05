@@ -130,14 +130,5 @@ namespace Calculator.Properties {
                 return ((int)(this["PopulationsCount"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("BasicAlgorithm")]
-        public string AlgorithmName {
-            get {
-                return ((string)(this["AlgorithmName"]));
-            }
-        }
     }
 }
