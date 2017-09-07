@@ -139,24 +139,5 @@ namespace Module.Tests
                 Assert.IsTrue(acc.Balance > 0);
             }
         }
-
-        [TestMethod]
-        public void TestConsistentParametersForGuppiAlgorithm()
-        {
-            var alg = new GuppiAlgorithm(1, 2, 3, 4);
-            Assert.IsTrue(alg.ParametersConsistent);
-            Assert.IsFalse(alg.CheckParameters(new float[] { 1, 2, 0, 4 }));
-            Assert.IsFalse(alg.CheckParameters(new float[] { 4, 1, 2, 3 }));
-        }
-
-        [TestMethod]
-        public void TestConsistentParametersForBasicAlgorithm()
-        {
-            var alg = new BasicAlgorithm(2);
-            Assert.IsFalse(alg.ParametersConsistent);
-            alg = new BasicAlgorithm(2, 3, 5, 2);
-            Assert.IsTrue(alg.CheckParameters(new float[] { 4, 1, 2, 3 }));
-
-        }
     }
 }

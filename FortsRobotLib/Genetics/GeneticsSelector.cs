@@ -108,12 +108,8 @@ namespace FortsRobotLib.Genetics
             for (var i = 0; i < _generationSize; i++)
             {
                 var prms = new float[_paramsCount];
-                do
-                {
-                    for (var num = 0; num < _paramsCount; num++)
-                        prms[num] = _lowParamBorder + _rand.Next(_highParamBorder - _lowParamBorder);
-                }
-                while (!_alg.CheckParameters(prms));
+                for (var num = 0; num < _paramsCount; num++)
+                    prms[num] = _lowParamBorder + _rand.Next(_highParamBorder - _lowParamBorder);
                 result[i] = prms.ToArray();
             }
             return result;
@@ -151,10 +147,7 @@ namespace FortsRobotLib.Genetics
                 Mutate(ind);
                 return;
             }
-            var prevInd = ind;
             ind[i1] = ind[i2] - (ind[i2] = ind[i1]) + ind[i1];
-            if (!_alg.CheckParameters(ind))
-                ind = prevInd;
         }
 
         public CalculationResult[] GetBestResults()
