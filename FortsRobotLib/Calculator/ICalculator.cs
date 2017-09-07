@@ -11,7 +11,7 @@ namespace FortsRobotLib.Calculator
 {
     public interface ICalculator
     {
-        TestAccAgregator Calculate(float[] parameters);
+        TestAccAgregator Calculate(float[] parameters, out IAlgorithm alg);
         Task CalculateAsync();
         void Wait();
         void Reset();

@@ -22,5 +22,6 @@ namespace FortsRobotLib.AccAggregator
         float MeanPositiveProfit { get; }
         float MeanNegativeProfit { get; }
         float SuccessRatio { get; }
+
     }
 }

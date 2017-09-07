@@ -10,6 +10,7 @@ using FortsRobotLib.ProviderDataCache;
 using Calculator.Properties;
 using System.Reflection;
 using FortsRobotLib.Algorithms;
+using System.Diagnostics;
 
 namespace Calculator
 {
@@ -32,6 +33,7 @@ namespace Calculator
             for (var i = Settings.Default.ParamsCountFrom; i < Settings.Default.ParamsCountTo; i = i + 2)
             {
                 _num = i;
+                Console.Title = string.Format("Length {0}, iteration {1}", _num, 1);
                 Console.WriteLine("Length {0}:", i);
                 Console.WriteLine("----------------------");
                 var genSelector = new GeneticsSelector<FinamCandleProvider, T>(cache, 3, 100, i, generationSize: Settings.Default.GenerationSize, threadsNum: Settings.Default.ThreadsCount);
@@ -52,13 +54,48 @@ namespace Calculator
                         result.MeanNegativeProfit,
                         result.SuccessRatio )
                     });
+                // generate result file for best result
+                var algDataFileName = string.Format("{0}_{1}params_{2}",
+                    typeof(T).Name, i, Settings.Default.ResultsFileName);
+                if (File.Exists(algDataFileName))
+                    File.Delete(algDataFileName);
+                File.AppendAllText(algDataFileName, string.Format("Algorithm:{0}{2}Parameters:{1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;<ALGORITHM DATA>{2}", 
+                    typeof(T).Name, string.Join(",", result.Parameters),  Environment.NewLine));
+                var lines = result.Data.Select(o =>
+                    string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
+                        Settings.Default.InsName,
+                        o.Candle.TimeStamp,
+                        o.Candle.Open,
+                        o.Candle.High,
+                        o.Candle.Low,
+                        o.Candle.Close,
+                        o.Amount,
+                        o.Balance,
+                        o.Amount > 0 ?
+                            "LONG" : (o.Amount < 0 ?
+                                "SHORT" : "EXIT")
+                        )
+                    ).ToArray();
+                Trace.Assert(lines.Count() - 2 == result.AlgorithmData.Length);
+                // do not consider last 1 line (when calculation just closes)
+                for (int li = 1; li < result.AlgorithmData.Length; li++)
+                {
+                    lines[li] = string.Format(";{0};{1};", 
+                        lines[li], 
+                        string.Join(";", result.AlgorithmData[li-1]));
+                }
+                File.AppendAllLines(algDataFileName, lines);
             }
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Calculation completed.");
             Console.ReadLine();
             _num = 0;
         }
 
         private void GenSelector_PopulationCompleted(object sender, PopulationCompletedEventArgs e)
         {
+            Console.Title = string.Format("Length {0}, iteration {1}",_num, e.PopulationIndex);
             Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}, mean +profit = {6}, mean -profit = {7}",
                 _num, e.PopulationIndex, e.Results.First().Balance,
                 e.Results.First().SharpIndex, e.Results.First().MeanProfit,

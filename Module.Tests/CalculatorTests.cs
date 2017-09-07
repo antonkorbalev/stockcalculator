@@ -21,9 +21,11 @@ namespace Module.Tests
             var p = new TextCandleProvider();
             p.SetTextParams(@"data\si-9-17.dat");
             var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p, 2);
-            var result = calc.Calculate(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 6, 7, 8,9, 10, 11, 12, 13 });
+            IAlgorithm alg;
+            var result = calc.Calculate(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 6, 7, 8,9, 10, 11, 12, 13 }, out alg);
             Assert.AreEqual(result.Balance, 2379);
             Assert.AreEqual(result.Assets, 0);
+            Assert.IsTrue(alg.Data.Length > 0);
         }
 
         [TestMethod]

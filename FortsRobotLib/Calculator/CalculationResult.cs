@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FortsRobotLib.AccAggregator;
 
 namespace FortsRobotLib.Calculator
 {
@@ -15,5 +16,7 @@ namespace FortsRobotLib.Calculator
         public float MeanPositiveProfit { get; set; }
         public float MeanNegativeProfit { get; set; }
         public float SuccessRatio { get; set; }
+        public AccRow[] Data { get; set; }
+        public float[][] AlgorithmData { get; set; }
     }
 }

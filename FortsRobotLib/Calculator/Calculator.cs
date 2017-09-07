@@ -90,7 +90,8 @@ namespace FortsRobotLib.Calculator
                             float[] parameters;
                             if (_ins.TryDequeue(out parameters))
                             {
-                                var result = Calculate(parameters);
+                                IAlgorithm alg;
+                                var result = Calculate(parameters, out alg);
                                 _outs.Add(new CalculationResult()
                                 {
                                     Parameters = parameters,
@@ -99,7 +100,9 @@ namespace FortsRobotLib.Calculator
                                     MeanProfit = result.MeanProfit,
                                     SuccessRatio = result.SuccessRatio,
                                     MeanNegativeProfit = result.MeanNegativeProfit,
-                                    MeanPositiveProfit = result.MeanPositiveProfit
+                                    MeanPositiveProfit = result.MeanPositiveProfit,
+                                    Data = result.Data,
+                                    AlgorithmData = alg.Data
                                 });
                             }
                         });
@@ -127,11 +130,11 @@ namespace FortsRobotLib.Calculator
             _threadsNum = threadsNum;
         }
 
-        public TestAccAgregator Calculate(float[] parameters)
+        public TestAccAgregator Calculate(float[] parameters, out IAlgorithm alg)
         {
             using (var mc = new MemoryCache<T>(_cache))
             {
-                var alg = (IAlgorithm)Activator.CreateInstance(typeof(T1));
+                alg = (IAlgorithm)Activator.CreateInstance(typeof(T1));
                 var acc = new TestAccAgregator();
                 alg.Initialize(parameters);
                 Candle curr = mc.Current; 
