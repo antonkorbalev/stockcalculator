@@ -88,24 +88,6 @@ namespace Module.Tests
         }
 
         [TestMethod]
-        public void TestAccAggregatorSharpIndex()
-        {
-            var acc = new TestAccAgregator();
-            var candle = new Candle();
-            acc.Buy(5, candle);
-            candle.Close = 10;
-            acc.Close(candle);
-            candle.Close = 5;
-            acc.Sell(1, candle);
-            candle.Close = 2;
-            acc.Sell(2, candle);
-            candle.Close = 3;
-            acc.Buy(3, candle);
-            Assert.AreEqual(acc.Balance, acc.Profits.Sum());
-            Assert.IsTrue(acc.SharpIndex > 0.4 && acc.SharpIndex < 0.41);
-        }
-
-        [TestMethod]
         public void TestAccAggregatorProfits()
         {
             var acc = new TestAccAgregator();
@@ -131,6 +113,34 @@ namespace Module.Tests
             Assert.AreEqual((float)2 / 3, acc.SuccessRatio);
             Assert.AreEqual(-3, acc.MeanNegativeProfit);
             Assert.AreEqual(24, acc.MeanPositiveProfit);
+        }
+
+        [TestMethod]
+        public void TestAccAggregatorSharpIndex()
+        {
+            var acc = new TestAccAgregator();
+            var candle = new Candle()
+            {
+                TimeStamp = new DateTime(2017, 1, 2, 15, 0, 0),
+                Close = 1
+            };
+            acc.Pass(candle);
+            Assert.AreEqual(0, acc.Balance);
+            Assert.AreEqual(0, acc.SharpIndex);
+            candle.TimeStamp = new DateTime(2017, 2, 1, 15, 0, 0);
+            acc.Buy(1, candle);
+            Assert.AreEqual(0, acc.SharpIndex);
+            candle.TimeStamp = new DateTime(2017, 2, 2, 15, 0, 0);
+            candle.Close = 10;
+            acc.Sell(2, candle);
+            candle.TimeStamp = new DateTime(2017, 3, 2, 15, 0, 0);
+            candle.Close = 12;
+            acc.Buy(1, candle);
+            candle.TimeStamp = new DateTime(2017, 4, 1, 14, 0, 0);
+            candle.Close = 15;
+            acc.Close(candle);
+            Assert.AreEqual(0.5, acc.SuccessRatio);
+            Assert.IsTrue(Math.Abs( 3.5 / (float)Math.Sqrt((3.5 - 9)* (3.5 - 9) + (3.5 + 2) * (3.5 + 2)) -  acc.SharpIndex) < 10e-3);
         }
     }
 }

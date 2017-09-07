@@ -56,11 +56,7 @@ namespace FortsRobotLib.AccAggregator
         {
             get
             {
-                if ((_profits == null) || (!_profits.Any()))
-                    return 0;
-                var mean = MeanProfit;
-                return mean /
-                    (float)Math.Sqrt(_profits.Select(o => (o - mean) * (o - mean)).Sum());
+                return GetSharpIndex();
             }
         }
         public float[] Profits
@@ -110,6 +106,32 @@ namespace FortsRobotLib.AccAggregator
         private float getBalance()
         {
             return _money + _assetsCount * _assetPrice;
+        }
+
+        internal float GetSharpIndex()
+        {
+            if (!Data.Any())
+                return 0;
+            var profitsPerMonths = new Dictionary<DateTime, float>();
+            var data = Data.First();
+            var maxTimeStamp = Data.Max(o => o.Candle.TimeStamp);
+            // profit for every month
+            while (maxTimeStamp >= data.Candle.TimeStamp.AddMonths(1)) 
+            {
+                var nextData = Data.First(o => o.Candle.TimeStamp >= data.Candle.TimeStamp.AddMonths(1));
+                profitsPerMonths.Add(data.Candle.TimeStamp, nextData.Balance - data.Balance);
+                data = nextData;
+            }
+
+            var meanProfitPerMonth = profitsPerMonths.Sum(o => o.Value) / profitsPerMonths.Count();
+            if (profitsPerMonths.Count() <= 1)
+                return 0;
+            else
+                return
+                    meanProfitPerMonth /
+                    (float)Math.Sqrt(profitsPerMonths.Select(o => 
+                    (o.Value - meanProfitPerMonth) * (o.Value - meanProfitPerMonth))
+                    .Sum());    
         }
 
         public void Reset()
