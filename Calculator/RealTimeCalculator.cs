@@ -59,10 +59,10 @@ namespace Calculator
                     typeof(T).Name, i, Settings.Default.ResultsFileName);
                 if (File.Exists(algDataFileName))
                     File.Delete(algDataFileName);
-                File.AppendAllText(algDataFileName, string.Format("Algorithm:{0}{2}Parameters:{1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;<ALGORITHM DATA>{2}", 
+                File.AppendAllText(algDataFileName, string.Format("Algorithm: {0}{2}Parameters: {1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;<ALGORITHM DATA>{2}", 
                     typeof(T).Name, string.Join(",", result.Parameters),  Environment.NewLine));
                 var lines = result.Data.Select(o =>
-                    string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
+                    string.Format(";{0};{1};{2};{3};{4};{5};{6};{7};{8};",
                         Settings.Default.InsName,
                         o.Candle.TimeStamp,
                         o.Candle.Open,
@@ -78,13 +78,13 @@ namespace Calculator
                     ).ToArray();
                 Trace.Assert(lines.Count() - 2 == result.AlgorithmData.Length);
                 // do not consider last 1 line (when calculation just closes)
-                for (int li = 1; li < result.AlgorithmData.Length; li++)
+                for (int li = 1; li <= result.AlgorithmData.Length; li++)
                 {
-                    lines[li] = string.Format(";{0};{1};", 
+                    lines[li] = string.Format("{0};{1};", 
                         lines[li], 
                         string.Join(";", result.AlgorithmData[li-1]));
                 }
-                File.AppendAllLines(algDataFileName, lines);
+                File.AppendAllLines(algDataFileName, lines.Take(lines.Length - 1));
             }
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
