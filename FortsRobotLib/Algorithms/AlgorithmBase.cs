@@ -12,6 +12,19 @@ namespace FortsRobotLib.Algorithms
         protected float[] _params;
         protected List<float[]> _data = new List<float[]>();
 
+        public virtual bool ParametersConsistent
+        {
+            get
+            {
+                return CheckParameters(_params);
+            }
+        }
+
+        public virtual bool CheckParameters(float[] prms)
+        {
+            return true;
+        }
+
         public float[] Parameters
         {
             get

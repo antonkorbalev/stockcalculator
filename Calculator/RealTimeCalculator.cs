@@ -59,8 +59,8 @@ namespace Calculator
                     typeof(T).Name, i, Settings.Default.ResultsFileName);
                 if (File.Exists(algDataFileName))
                     File.Delete(algDataFileName);
-                File.AppendAllText(algDataFileName, string.Format("Algorithm: {0}{2}Parameters: {1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;<ALGORITHM DATA>{2}", 
-                    typeof(T).Name, string.Join(",", result.Parameters),  Environment.NewLine));
+                File.AppendAllText(algDataFileName, string.Format("Algorithm: {0}{2}Parameters: {1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;<ALGORITHM DATA>{2}",
+                    typeof(T).Name, string.Join(",", result.Parameters), Environment.NewLine));
                 var lines = result.Data.Select(o =>
                     string.Format(";{0};{1};{2};{3};{4};{5};{6};{7};{8};",
                         Settings.Default.InsName,
@@ -75,16 +75,15 @@ namespace Calculator
                             "LONG" : (o.Amount < 0 ?
                                 "SHORT" : "EXIT")
                         )
-                    ).ToArray();
-                Trace.Assert(lines.Count() - 2 == result.AlgorithmData.Length);
-                // do not consider last 1 line (when calculation just closes)
-                for (int li = 1; li <= result.AlgorithmData.Length; li++)
+                    ).Take(result.Data.Length - 1).ToArray();
+
+                for (int li = 0; li < result.AlgorithmData.Length - 1; li++)
                 {
-                    lines[li] = string.Format("{0};{1};", 
-                        lines[li], 
-                        string.Join(";", result.AlgorithmData[li-1]));
+                    lines[lines.Length - li -1] = string.Format("{0};{1};",
+                        lines[lines.Length - li - 1],
+                        string.Join(";", result.AlgorithmData[result.AlgorithmData.Length - li - 1]));
                 }
-                File.AppendAllLines(algDataFileName, lines.Take(lines.Length - 1));
+                File.AppendAllLines(algDataFileName, lines);
             }
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -95,7 +94,7 @@ namespace Calculator
 
         private void GenSelector_PopulationCompleted(object sender, PopulationCompletedEventArgs e)
         {
-            Console.Title = string.Format("Length {0}, iteration {1}",_num, e.PopulationIndex);
+            Console.Title = string.Format("Length {0}, iteration {1}", _num, e.PopulationIndex);
             Console.WriteLine("{0}: iteration {1}, profit = {2}, sharp ind = {3}, mean profit = {4}, success = {5}, mean +profit = {6}, mean -profit = {7}",
                 _num, e.PopulationIndex, e.Results.First().Balance,
                 e.Results.First().SharpIndex, e.Results.First().MeanProfit,

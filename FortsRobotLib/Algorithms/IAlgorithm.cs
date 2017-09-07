@@ -15,5 +15,8 @@ namespace FortsRobotLib.Algorithms
         void Reset();
         AlgResult Check(Candle candle);
         float[][] Data { get; }
+        bool ParametersConsistent { get; }
+
+        bool CheckParameters(float[] prms);
     }
 }

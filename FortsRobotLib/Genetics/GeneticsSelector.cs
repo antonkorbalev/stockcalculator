@@ -103,11 +103,16 @@ namespace FortsRobotLib.Genetics
         internal float[][] GenerateRandomPopulation()
         {
             var result = new float[_generationSize][];
+            var alg = (IAlgorithm)Activator.CreateInstance(typeof(T1));
             for (var i = 0; i < _generationSize; i++)
             {
                 var prms = new float[_paramsCount];
-                for (var num = 0; num < _paramsCount; num++)
-                    prms[num] = _lowParamBorder + _rand.Next(_highParamBorder - _lowParamBorder);
+                do
+                {
+                    for (var num = 0; num < _paramsCount; num++)
+                        prms[num] = _lowParamBorder + _rand.Next(_highParamBorder - _lowParamBorder);
+                }
+                while (!alg.CheckParameters(prms));
                 result[i] = prms.ToArray();
             }
             return result;
