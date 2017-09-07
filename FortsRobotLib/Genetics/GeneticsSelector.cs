@@ -29,6 +29,7 @@ namespace FortsRobotLib.Genetics
         private bool _isRunning;
         private CancellationTokenSource _cts;
         private ManualResetEvent _wait;
+        IAlgorithm _alg;
 
         public event EventHandler<PopulationCompletedEventArgs> PopulationCompleted;
         public int PopulationIndex { get; private set; }
@@ -78,6 +79,7 @@ namespace FortsRobotLib.Genetics
                 _selectCondition = selectCondition;
             _wait = new ManualResetEvent(true);
             _cts = new CancellationTokenSource();
+            _alg = (IAlgorithm)Activator.CreateInstance(typeof(T1));
         }
 
         public GeneticsSelector(T provider, int lowParamBorder,
@@ -103,7 +105,6 @@ namespace FortsRobotLib.Genetics
         internal float[][] GenerateRandomPopulation()
         {
             var result = new float[_generationSize][];
-            var alg = (IAlgorithm)Activator.CreateInstance(typeof(T1));
             for (var i = 0; i < _generationSize; i++)
             {
                 var prms = new float[_paramsCount];
@@ -112,7 +113,7 @@ namespace FortsRobotLib.Genetics
                     for (var num = 0; num < _paramsCount; num++)
                         prms[num] = _lowParamBorder + _rand.Next(_highParamBorder - _lowParamBorder);
                 }
-                while (!alg.CheckParameters(prms));
+                while (!_alg.CheckParameters(prms));
                 result[i] = prms.ToArray();
             }
             return result;
@@ -150,7 +151,10 @@ namespace FortsRobotLib.Genetics
                 Mutate(ind);
                 return;
             }
+            var prevInd = ind;
             ind[i1] = ind[i2] - (ind[i2] = ind[i1]) + ind[i1];
+            if (!_alg.CheckParameters(ind))
+                ind = prevInd;
         }
 
         public CalculationResult[] GetBestResults()
