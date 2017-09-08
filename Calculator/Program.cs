@@ -36,7 +36,6 @@ namespace Calculator
             Console.Write(" Select algorithm: ");
             int num;
             int.TryParse(Console.ReadLine(), out num);
-            Console.WriteLine();
 
             if (num < 1 || num > algTypes.Count())
             {
