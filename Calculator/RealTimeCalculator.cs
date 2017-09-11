@@ -33,7 +33,7 @@ namespace Calculator
             for (var i = Settings.Default.ParamsCountFrom; i < Settings.Default.ParamsCountTo; i = i + 2)
             {
                 _num = i;
-                Console.Title = string.Format("Length {0}, iteration {1}", _num, 1);
+                Console.Title = string.Format("Length {0}", _num);
                 Console.WriteLine();
                 Console.WriteLine(" Length {0}:", i);
                 Console.WriteLine(" ----------------------------------------------------------------");
