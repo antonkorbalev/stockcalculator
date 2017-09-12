@@ -62,8 +62,8 @@ namespace Calculator
                     typeof(T).Name, i, Settings.Default.ResultsFileName);
                 if (File.Exists(algDataFileName))
                     File.Delete(algDataFileName);
-                File.AppendAllText(algDataFileName, string.Format("Algorithm: {0}{2}Parameters: {1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;<ALGORITHM DATA>{2}",
-                    typeof(T).Name, string.Join(",", result.Parameters), Environment.NewLine));
+                File.AppendAllText(algDataFileName, string.Format("Algorithm: {0}{2}Parameters: {1}{2};<INSTRUMENT>;<TIME>;<OPEN>;<HIGH>;<LOW>;<CLOSE>;<AMOUNT>;<BALANCE>;<RESULT>;;{3}{2}",
+                    typeof(T).Name, string.Join(",", result.Parameters), Environment.NewLine, result.AlgorithmData.Any() ? "<ALGORITHM DATA>" : string.Empty));
                 var lines = result.Data.Select(o =>
                     string.Format(";{0};{1};{2};{3};{4};{5};{6};{7};{8};",
                         Settings.Default.InsName,

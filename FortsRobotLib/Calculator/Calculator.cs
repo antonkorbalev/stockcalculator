@@ -102,7 +102,7 @@ namespace FortsRobotLib.Calculator
                                     MeanNegativeProfit = result.MeanNegativeProfit,
                                     MeanPositiveProfit = result.MeanPositiveProfit,
                                     Data = result.Data,
-                                    AlgorithmData = alg.Data
+                                    AlgorithmData = alg.HasData ? alg.Data : new float[0][]
                                 });
                             }
                         });

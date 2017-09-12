@@ -39,6 +39,14 @@ namespace FortsRobotLib.Algorithms
             }
         }
 
+        public virtual bool HasData
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public void Reset()
         {
             _data = new List<float[]>();
