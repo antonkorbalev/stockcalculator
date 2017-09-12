@@ -204,7 +204,6 @@ namespace FortsRobotLib.Genetics
                 Mutate(newGen[_rand.Next(_generationSize)]);
 
             // add new generation for calculation
-            Trace.Assert(Math.Abs(newGen.Count() - _generationSize) <= 1);
             _calculator.Reset();
             foreach (var ind in newGen)
                 _calculator.AddParamsForCalculation(ind);
