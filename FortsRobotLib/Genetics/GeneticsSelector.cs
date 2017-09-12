@@ -23,6 +23,7 @@ namespace FortsRobotLib.Genetics
         private int _highParamBorder;
         private int _paramsCount;
         private int _maxGeneration;
+        private int _crossPercent;
         private Random _rand = new Random();
         private Calculator<T, T1> _calculator;
         private Func<CalculationResult, float> _selectCondition;
@@ -62,7 +63,7 @@ namespace FortsRobotLib.Genetics
 
         private void Initialize(int lowParamBorder,
             int highParamBorder, int paramsCount, int threadsNum,
-            int generationSize, int selectionPercent, int mutationsPercent,
+            int generationSize, int selectionPercent, int mutationsPercent, int crossPercent,
             Func<CalculationResult, float> selectCondition)
         {
             _generationSize = generationSize;
@@ -71,6 +72,7 @@ namespace FortsRobotLib.Genetics
             _lowParamBorder = lowParamBorder;
             _highParamBorder = highParamBorder;
             _paramsCount = paramsCount;
+            _crossPercent = crossPercent;
 
             // select condition for individuals
             if (selectCondition == null)
@@ -84,21 +86,21 @@ namespace FortsRobotLib.Genetics
 
         public GeneticsSelector(T provider, int lowParamBorder,
             int highParamBorder, int paramsCount, int threadsNum = 4,
-            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5,
+            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5, int crossPercent = 50,
             Func<CalculationResult, float> selectCondition = null)
         {
             Initialize(lowParamBorder, highParamBorder, paramsCount, threadsNum, generationSize,
-                selectionPercent, mutationsPercent, selectCondition);
+                selectionPercent, mutationsPercent, crossPercent,  selectCondition);
             _calculator = new Calculator<T, T1>(provider, threadsNum);
         }
 
         public GeneticsSelector(MemoryCache<T> cache, int lowParamBorder,
             int highParamBorder, int paramsCount, int threadsNum = 4,
-            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5,
+            int generationSize = 100, int selectionPercent = 30, int mutationsPercent = 5, int crossPercent = 50,
             Func<CalculationResult, float> selectCondition = null)
         {
             Initialize(lowParamBorder, highParamBorder, paramsCount, threadsNum, generationSize,
-                selectionPercent, mutationsPercent, selectCondition);
+                selectionPercent, mutationsPercent, crossPercent, selectCondition);
             _calculator = new Calculator<T, T1>(cache, threadsNum);
         }
 
@@ -178,16 +180,22 @@ namespace FortsRobotLib.Genetics
             }
 
             // select individuals
-            var num = 0;
             var newGen = new List<float[]>();
-            while (num < _generationSize)
+            while (newGen.Count() < _generationSize)
             {
                 float[] child1, child2;
-                Cross(crossInds[_rand.Next(crossInds.Length)].Parameters, crossInds[_rand.Next(crossInds.Length)].Parameters,
-                    out child1, out child2);
+                var parent1 = crossInds[_rand.Next(crossInds.Length)].Parameters;
+                var parent2 = crossInds[_rand.Next(crossInds.Length)].Parameters;
+                if (_rand.Next(100) <= _crossPercent)
+                    Cross(parent1, parent2, out child1, out child2);
+                else
+                {
+                    child1 = parent1;
+                    child2 = parent2;
+                }
+
                 newGen.Add(child1);
                 newGen.Add(child2);
-                num = num + 2;
             }
 
             // mutate individuals
@@ -196,7 +204,7 @@ namespace FortsRobotLib.Genetics
                 Mutate(newGen[_rand.Next(_generationSize)]);
 
             // add new generation for calculation
-            Trace.Assert(newGen.Count() == _generationSize);
+            Trace.Assert(Math.Abs(newGen.Count() - _generationSize) <= 1);
             _calculator.Reset();
             foreach (var ind in newGen)
                 _calculator.AddParamsForCalculation(ind);

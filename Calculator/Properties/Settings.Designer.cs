@@ -130,5 +130,14 @@ namespace Calculator.Properties {
                 return ((int)(this["PopulationsCount"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int CrossPercent {
+            get {
+                return ((int)(this["CrossPercent"]));
+            }
+        }
     }
 }

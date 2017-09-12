@@ -39,7 +39,7 @@ namespace Calculator
                 Console.WriteLine(" ----------------------------------------------------------------");
                 Console.WriteLine(" | iter | profit | sharp | mean p | success | mean p+ | mean p- |");
                 Console.WriteLine(" ----------------------------------------------------------------");
-                var genSelector = new GeneticsSelector<FinamCandleProvider, T>(cache, 3, 100, i, generationSize: Settings.Default.GenerationSize, threadsNum: Settings.Default.ThreadsCount);
+                var genSelector = new GeneticsSelector<FinamCandleProvider, T>(cache, 3, 100, i, generationSize: Settings.Default.GenerationSize, threadsNum: Settings.Default.ThreadsCount, crossPercent: Settings.Default.CrossPercent);
                 genSelector.PopulationCompleted += GenSelector_PopulationCompleted;
                 genSelector.Select(Settings.Default.PopulationsCount);
                 genSelector.Wait();
