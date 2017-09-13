@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FortsRobotLib.Algorithms
 {
-    public class AlgorithmBase
+    public class AlgorithmBase : IAlgorithm
     {
         protected List<Candle> _candles = new List<Candle>();
         protected float[] _params;
@@ -45,6 +45,11 @@ namespace FortsRobotLib.Algorithms
             {
                 return true;
             }
+        }
+
+        public virtual AlgResult Check(Candle candle)
+        {
+            return AlgResult.Exit;
         }
 
         public void Reset()
