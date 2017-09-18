@@ -7,6 +7,7 @@ using System.IO;
 using FortsRobotLib.AccAggregator;
 using FortsRobotLib.Algorithms;
 using FortsRobotLib;
+using System.Globalization;
 
 namespace Module.Tests
 {
@@ -65,9 +66,9 @@ namespace Module.Tests
                         var values = reader.ReadLine().Split(';').ToArray();
                         for (var i = 3; i < 12; i++)
                         {
-                            Assert.AreEqual(Math.Truncate((data[i - 2])), Math.Truncate(float.Parse(values[i])));
+                            Assert.AreEqual(Math.Truncate((data[i - 2])), Math.Truncate(float.Parse(values[i], NumberStyles.Any, CultureInfo.InvariantCulture)));
                         }
-                        Assert.AreEqual(Math.Truncate(float.Parse(values[2])), Math.Truncate(data[0]));
+                        Assert.AreEqual(Math.Truncate(float.Parse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture)), Math.Truncate(data[0]));
                         System.Diagnostics.Trace.WriteLine(answer);
                     }
                 }
@@ -116,7 +117,7 @@ namespace Module.Tests
         {
             using (var provider = new TextCandleProvider())
             {
-                provider.SetTextParams("data/si-9-17.dat", ';');
+                provider.SetTextParams(@"data\si-9-17.dat", ';');
                 var alg = new GuppiAlgorithm(4, 6, 9, 13, 31, 36, 41, 46, 51, 61);
                 var acc = new TestAccAgregator();
                 for (var i = 0; i < 61; i++)
@@ -138,6 +139,41 @@ namespace Module.Tests
                 }
                 Assert.IsTrue(acc.Balance > 0);
             }
+        }
+
+        [TestMethod]
+        public void TestGuppiAlgMatrix()
+        {
+            var alg = new GuppiAlgorithm(4, 6, 9, 11, 13, 16, 31, 36, 41, 46, 51, 61);
+            using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
+                "14", "19899", new DateTime(2013, 9, 1), new DateTime(2014, 03, 10)))
+            {
+                provider.Initialize();
+                using (var reader = new StreamReader(@"data\guppi_data.dat"))
+                {
+                    var startDate = new DateTime(2014, 01, 13, 15, 0, 0);
+                    while (provider.Current.TimeStamp != startDate)
+                    {
+                        provider.MoveNext();
+                        alg.Check(provider.Current);
+                    }
+                    reader.ReadLine();
+                    while (!reader.EndOfStream)
+                    {
+                        provider.MoveNext();
+                        alg.Check(provider.Current);
+                        var data = reader.ReadLine().Split(';');
+                        var algData = alg.Data.Last();
+                        int i;
+                        for (i = 0; i < 12; i++)
+                            Assert.IsTrue(Math.Abs(float.Parse(data[i]) - algData[i]) <= 1);
+                        for (i = 12; i < 24; i++)
+                            Assert.AreEqual(int.Parse(data[i]), algData[i]);
+                        for (i = 24; i < 34; i++)
+                            Assert.AreEqual(int.Parse(data[i]), -algData[i]);
+                    }
+                }
+            }       
         }
     }
 }

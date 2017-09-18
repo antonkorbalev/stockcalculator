@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace FortsRobotLib.CandleProviders
 {
@@ -20,7 +21,7 @@ namespace FortsRobotLib.CandleProviders
             int num = 0;
             foreach (var part in parts.Skip(2))
             {
-                Trace.Assert(float.TryParse(part, out values[num]), "Invalid number format in candle description!");
+                Trace.Assert(float.TryParse(part, NumberStyles.Any, CultureInfo.InvariantCulture, out values[num]), "Invalid number format in candle description!");
                 num++;
             }
             return new Candle()
