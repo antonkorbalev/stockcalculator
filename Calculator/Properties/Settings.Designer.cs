@@ -25,7 +25,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017-05-01")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-01-01")]
         public global::System.DateTime DateFrom {
             get {
                 return ((global::System.DateTime)(this["DateFrom"]));
@@ -70,7 +70,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
         public int GenerationSize {
             get {
                 return ((int)(this["GenerationSize"]));
@@ -124,7 +124,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int PopulationsCount {
             get {
                 return ((int)(this["PopulationsCount"]));

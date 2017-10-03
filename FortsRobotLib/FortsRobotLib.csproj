@@ -43,6 +43,7 @@
     <Compile Include="AccAggregator\AccRow.cs" />
     <Compile Include="AccAggregator\IAccAgregator.cs" />
     <Compile Include="AccAggregator\TestAccAgregator.cs" />
+    <Compile Include="Algorithms\AlgorithmAttribute.cs" />
     <Compile Include="Algorithms\AlgorithmBase.cs" />
     <Compile Include="Algorithms\IAlgorithm.cs" />
     <Compile Include="AlgResult.cs" />

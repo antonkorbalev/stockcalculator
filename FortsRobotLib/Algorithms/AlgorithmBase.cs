@@ -39,14 +39,6 @@ namespace FortsRobotLib.Algorithms
             }
         }
 
-        public virtual bool HasData
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public virtual AlgResult Check(Candle candle)
         {
             return AlgResult.Exit;

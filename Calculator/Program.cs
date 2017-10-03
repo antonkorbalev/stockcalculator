@@ -25,7 +25,8 @@ namespace Calculator
             {
                 algTypes.AddRange(Assembly.LoadFrom(file).GetTypes()
                     .Where(o =>
-                    o.BaseType == typeof(AlgorithmBase)));
+                    o.BaseType == typeof(AlgorithmBase) 
+                    && o.IsDefined(typeof(AlgorithmAttribute))));
             }    
 
             Console.WriteLine("=== Found {0} algorithms ===", algTypes.Count());

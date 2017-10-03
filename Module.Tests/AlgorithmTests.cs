@@ -118,7 +118,7 @@ namespace Module.Tests
             using (var provider = new TextCandleProvider())
             {
                 provider.SetTextParams(@"data\si-9-17.dat", ';');
-                var alg = new GuppiAlgorithm(4, 6, 9, 13, 31, 36, 41, 46, 51, 61);
+                var alg = new GuppiAlgorithm(4, 6, 9, 13, 31, 36, 41, 46, 51, 61, 0, 0);
                 var acc = new TestAccAgregator();
                 for (var i = 0; i < 61; i++)
                 {
@@ -144,7 +144,7 @@ namespace Module.Tests
         [TestMethod]
         public void TestGuppiAlgMatrix()
         {
-            var alg = new GuppiAlgorithm(4, 6, 9, 11, 13, 16, 31, 36, 41, 46, 51, 61);
+            var alg = new GuppiAlgorithm(4, 6, 9, 11, 13, 16, 31, 36, 41, 46, 51, 61, 0, 0);
             using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
                 "14", "19899", new DateTime(2013, 9, 1), new DateTime(2014, 03, 10)))
             {
