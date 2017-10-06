@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using FortsRobotLib.CandleProviders;
 using FortsRobotLib.Algorithms;
 using FortsRobotLib.AccAggregator;
+using FortsRobotLib.ProviderDataCache;
 
 namespace FortsRobotLib.Calculator
 {
-    public interface ICalculator
+    public interface ICalculator<T>
+        where T : ICandleProvider
     {
         TestAccAgregator Calculate(float[] parameters, out IAlgorithm alg);
         Task CalculateAsync();
@@ -19,5 +21,6 @@ namespace FortsRobotLib.Calculator
         void AddParamsForCalculation(float[] parameters);
         int ThreadsNum { get; }
         bool IsRunning { get; }
+        MemoryCache<T> MemCache { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using FortsRobotLib.ProviderDataCache;
 using Calculator.Properties;
 using System.Reflection;
 using FortsRobotLib.Algorithms;
+using FortsRobotLib.Calculator;
 
 namespace Calculator
 {
@@ -25,9 +26,9 @@ namespace Calculator
             {
                 algTypes.AddRange(Assembly.LoadFrom(file).GetTypes()
                     .Where(o =>
-                    o.BaseType == typeof(AlgorithmBase) 
+                    o.BaseType == typeof(AlgorithmBase)
                     && o.IsDefined(typeof(AlgorithmAttribute))));
-            }    
+            }
 
             Console.WriteLine("=== Found {0} algorithms ===", algTypes.Count());
             for (var i = 1; i <= algTypes.Count(); i++)
@@ -44,9 +45,49 @@ namespace Calculator
                 return;
             }
 
-            var calc = (IRealTimeCalculator) Activator.CreateInstance(typeof(RealTimeCalculator<>)
-                .MakeGenericType(algTypes[num-1]));
-            calc.Calculate();
+            if (!args.Any() || (args[0] == "--genetics"))
+            {
+                var calc = (IRealTimeCalculator)Activator.CreateInstance(typeof(RealTimeCalculator<>)
+                    .MakeGenericType(algTypes[num - 1]));
+                calc.Calculate();
+            }
+            if (args[0] == "--calculate")
+            {
+                if (args.Length <= 1)
+                    return;
+                using (var provider = new FinamCandleProvider(Settings.Default.InsName, Settings.Default.TimePeriod,
+                    Settings.Default.MarketCode, Settings.Default.InsCode, Settings.Default.DateFrom, Settings.Default.DateTo))
+                {
+                    var calc = (ICalculator<FinamCandleProvider>)Activator.CreateInstance(typeof(Calculator<,>)
+                    .MakeGenericType(typeof(FinamCandleProvider), algTypes[num - 1]));
+                    calc.MemCache = new MemoryCache<FinamCandleProvider>(provider);
+
+                    foreach (var arg in args.Skip(1))
+                    {
+                        if (!arg.StartsWith("--p="))
+                            return;
+                        var splits = arg.Split('=').Last().Split(',');
+                        var prms = new float[splits.Length];
+                        for (var i = 0; i < splits.Length; i++)
+                        {
+                            float p;
+                            if (!float.TryParse(splits[i], out p))
+                                return;
+                            prms[i] = p;
+                        }
+                        calc.AddParamsForCalculation(prms);
+                    }
+                    calc.CalculateAsync();
+                    calc.Wait();
+                    var n = 0;
+                    foreach (var r in calc.Results)
+                    {
+                        n++;
+                        AlgDataExport.ExportToCSV(r, string.Format("{0}_{1}", 
+                            n, Settings.Default.ResultsFileName), algTypes[num-1].Name);
+                    }
+                }
+            }
         }
     }
 }

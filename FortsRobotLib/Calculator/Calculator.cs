@@ -13,13 +13,13 @@ using System.Threading;
 
 namespace FortsRobotLib.Calculator
 {
-    public class Calculator<T, T1> : ICalculator, IDisposable
+    public class Calculator<T, T1> : ICalculator<T>, IDisposable
         where T : ICandleProvider
         where T1 : IAlgorithm, new()
     {
         private ManualResetEvent _wait = new ManualResetEvent(true); 
         private MemoryCache<T> _cache;
-        private int _threadsNum;
+        private int _threadsNum = 1;
         private ConcurrentQueue<float[]> _ins = new ConcurrentQueue<float[]>();
         private List<CalculationResult> _outs = new List<CalculationResult>();
         private bool _isRunning;
@@ -53,6 +53,18 @@ namespace FortsRobotLib.Calculator
             get
             {
                 return _outs.ToArray();
+            }
+        }
+
+        public MemoryCache<T> MemCache
+        {
+            get
+            {
+                return _cache;
+            }
+            set
+            {
+                _cache = value;
             }
         }
 
@@ -129,6 +141,8 @@ namespace FortsRobotLib.Calculator
             _cache = new MemoryCache<T>(provider);
             _threadsNum = threadsNum;
         }
+
+        public Calculator() { }
 
         public TestAccAgregator Calculate(float[] parameters, out IAlgorithm alg)
         {

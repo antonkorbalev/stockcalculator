@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlgDataExport.cs" />
     <Compile Include="IRealTimeCalculator.cs" />
     <Compile Include="RealTimeCalculator.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

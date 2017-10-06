@@ -118,7 +118,7 @@ namespace Module.Tests
             using (var provider = new TextCandleProvider())
             {
                 provider.SetTextParams(@"data\si-9-17.dat", ';');
-                var alg = new GuppiAlgorithm(4, 6, 9, 13, 31, 36, 41, 46, 51, 61, 0, 0);
+                var alg = new GuppiAlgorithm(4, 6, 9, 13, 31, 36, 41, 46, 51, 61);
                 var acc = new TestAccAgregator();
                 for (var i = 0; i < 61; i++)
                 {
@@ -137,14 +137,13 @@ namespace Module.Tests
                         acc.Close(provider.Current);
                     Assert.IsTrue(alg.Data.Last().Length == 10 + 10 + 8 + 1);
                 }
-                Assert.IsTrue(acc.Balance > 0);
             }
         }
 
         [TestMethod]
         public void TestGuppiAlgMatrix()
         {
-            var alg = new GuppiAlgorithm(4, 6, 9, 11, 13, 16, 31, 36, 41, 46, 51, 61, 0, 0);
+            var alg = new GuppiAlgorithm(4, 6, 9, 11, 13, 16, 31, 36, 41, 46, 51, 61);
             using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
                 "14", "19899", new DateTime(2013, 9, 1), new DateTime(2014, 03, 10)))
             {
@@ -169,8 +168,7 @@ namespace Module.Tests
                             Assert.IsTrue(Math.Abs(float.Parse(data[i]) - algData[i]) <= 1);
                         for (i = 12; i < 24; i++)
                             Assert.AreEqual(int.Parse(data[i]), algData[i]);
-                        for (i = 24; i < 34; i++)
-                            Assert.AreEqual(int.Parse(data[i]), -algData[i]);
+                        Assert.IsTrue(algData[33] == algData[28] && algData[28] == -1);
                     }
                 }
             }       
