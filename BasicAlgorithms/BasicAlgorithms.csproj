@@ -40,14 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicAlgorithm.cs" />
     <Compile Include="GuppiAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FortsRobotLib\FortsRobotLib.csproj">
+    <ProjectReference Include="..\FortsRobotLib\ForexRobotLib.csproj">
       <Project>{8eac99ea-6f96-4629-b383-2a35f85016d4}</Project>
-      <Name>FortsRobotLib</Name>
+      <Name>ForexRobotLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

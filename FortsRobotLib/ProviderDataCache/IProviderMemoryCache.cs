@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib.CandleProviders;
 
-namespace FortsRobotLib.ProviderDataCache
+namespace ForexRobotLib.ProviderDataCache
 {
     public interface IProviderMemoryCache : ICandleIterator 
     {

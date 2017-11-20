@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.CandleProviders;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib.AccAggregator;
-using FortsRobotLib.ProviderDataCache;
+using ForexRobotLib.CandleProviders;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib.AccAggregator;
+using ForexRobotLib.ProviderDataCache;
 
-namespace FortsRobotLib.Calculator
+namespace ForexRobotLib.Calculator
 {
     public interface ICalculator<T>
         where T : ICandleProvider

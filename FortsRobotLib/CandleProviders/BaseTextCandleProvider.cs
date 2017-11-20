@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace FortsRobotLib.CandleProviders
+namespace ForexRobotLib.CandleProviders
 {
     public class BaseTextCandleProvider
     {

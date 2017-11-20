@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib.CandleProviders;
 using BasicAlgorithms;
 using System.Linq;
 using System.IO;
-using FortsRobotLib.AccAggregator;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib;
+using ForexRobotLib.AccAggregator;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib;
 using System.Globalization;
 
 namespace Module.Tests
@@ -41,65 +41,6 @@ namespace Module.Tests
         }
 
         [TestMethod]
-        public void TestBasicAlgMatrix()
-        {
-            using (var provider = new TextCandleProvider())
-            {
-                var alg = new BasicAlgorithm(13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13);
-                provider.SetTextParams("data/si-9-17.dat", ';');
-                while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 1, 15, 0, 0))
-                {
-                }
-                Assert.IsTrue(provider.Current.Close == 58054);
-                while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 8, 11, 0, 0))
-                {
-                    alg.Check(provider.Current);
-                }
-                alg.Check(provider.Current);
-                Assert.IsTrue(provider.Current.Close == 58204);
-                using (var reader = new StreamReader("../../data/basic_data.dat"))
-                {
-                    while (provider.MoveNext() && provider.Current.TimeStamp != new DateTime(2017, 6, 10, 0, 0, 0))
-                    {
-                        var answer = alg.Check(provider.Current);
-                        var data = alg.Data.Last();
-                        var values = reader.ReadLine().Split(';').ToArray();
-                        for (var i = 3; i < 12; i++)
-                        {
-                            Assert.AreEqual(Math.Truncate((data[i - 2])), Math.Truncate(float.Parse(values[i], NumberStyles.Any, CultureInfo.InvariantCulture)));
-                        }
-                        Assert.AreEqual(Math.Truncate(float.Parse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture)), Math.Truncate(data[0]));
-                        System.Diagnostics.Trace.WriteLine(answer);
-                    }
-                }
-                Assert.IsTrue(provider.Current.Close == 58220);
-            }
-        }
-
-        [TestMethod]
-        public void TestBasicAlgProfit()
-        {
-            using (var provider = new TextCandleProvider())
-            {
-                provider.SetTextParams("data/si-9-17.dat", ';');
-                var alg = new BasicAlgorithm(5, 5);
-                var acc = new TestAccAgregator();
-                while (provider.MoveNext())
-                {
-                    var answer = alg.Check(provider.Current);
-                    if (answer == FortsRobotLib.AlgResult.Buy)
-                        acc.Buy(1 - acc.Assets, provider.Current);
-                    if (answer == FortsRobotLib.AlgResult.Sell)
-                        acc.Sell(1 + acc.Assets, provider.Current);
-                    if (answer == FortsRobotLib.AlgResult.Exit)
-                        acc.Close(provider.Current);
-                }
-                acc.Close(provider.Current);
-                Assert.IsTrue(acc.Balance > 0);
-            }
-        }
-
-        [TestMethod]
         public void TestAlgorithmBaseInit()
         {
             var alg = new AlgorithmBase();
@@ -129,13 +70,13 @@ namespace Module.Tests
                 while (provider.MoveNext())
                 {
                     var answer = alg.Check(provider.Current);
-                    if (answer == FortsRobotLib.AlgResult.Buy)
+                    if (answer == ForexRobotLib.AlgResult.Buy)
                         acc.Buy(1 - acc.Assets, provider.Current);
-                    if (answer == FortsRobotLib.AlgResult.Sell)
+                    if (answer == ForexRobotLib.AlgResult.Sell)
                         acc.Sell(1 + acc.Assets, provider.Current);
-                    if (answer == FortsRobotLib.AlgResult.Exit)
+                    if (answer == ForexRobotLib.AlgResult.Exit)
                         acc.Close(provider.Current);
-                    Assert.IsTrue(alg.Data.Last().Length == 10 + 10 + 8 + 1);
+                    Assert.IsTrue(alg.Data.Last().Length == 10 + 10 + 8 + 3);
                 }
             }
         }
@@ -143,14 +84,14 @@ namespace Module.Tests
         [TestMethod]
         public void TestGuppiAlgMatrix()
         {
-            var alg = new GuppiAlgorithm(4, 6, 9, 11, 13, 16, 31, 36, 41, 46, 51, 61);
+            var alg = new GuppiAlgorithm(12, 30, 33, 34, 36, 44);
             using (var provider = new FinamCandleProvider("SPFB.SI", TimePeriod.Hour,
-                "14", "19899", new DateTime(2013, 9, 1), new DateTime(2014, 03, 10)))
+                "14", "19899", new DateTime(2015, 5, 1), new DateTime(2015, 10, 1)))
             {
                 provider.Initialize();
                 using (var reader = new StreamReader(@"data\guppi_data.dat"))
                 {
-                    var startDate = new DateTime(2014, 01, 13, 15, 0, 0);
+                    var startDate = new DateTime(2015, 5, 15, 0, 0, 0);
                     while (provider.Current.TimeStamp != startDate)
                     {
                         provider.MoveNext();
@@ -163,12 +104,16 @@ namespace Module.Tests
                         alg.Check(provider.Current);
                         var data = reader.ReadLine().Split(';');
                         var algData = alg.Data.Last();
-                        int i;
-                        for (i = 0; i < 12; i++)
-                            Assert.IsTrue(Math.Abs(float.Parse(data[i]) - algData[i]) <= 1);
-                        for (i = 12; i < 24; i++)
-                            Assert.AreEqual(int.Parse(data[i]), algData[i]);
-                        Assert.IsTrue(algData[33] == algData[28] && algData[28] == -1);
+                        for (var i = 4; i < 10; i++)
+                        {
+                            var mean = float.Parse(data[i], CultureInfo.InvariantCulture);
+                            Assert.IsTrue(Math.Abs(algData[i - 4] - mean) < 0.01);
+                        }
+                        for (var i = 11; i <= 22; i++)
+                        {
+                            var sign = float.Parse(data[i]);
+                            Assert.AreEqual(sign, algData[i - 5]);
+                        }
                     }
                 }
             }       

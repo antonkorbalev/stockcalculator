@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.CandleProviders;
-using FortsRobotLib;
+using ForexRobotLib.CandleProviders;
+using ForexRobotLib;
 
-namespace FortsRobotLib.ProviderDataCache
+namespace ForexRobotLib.ProviderDataCache
 {
     /// <summary>
     /// This class is used to cache candles from providers

@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace FortsRobotLib.CandleProviders
+namespace ForexRobotLib.CandleProviders
 {
     /// <summary>
     /// An iterator for candles from text file

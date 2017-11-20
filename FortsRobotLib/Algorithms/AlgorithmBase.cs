@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FortsRobotLib.Algorithms
+namespace ForexRobotLib.Algorithms
 {
     public class AlgorithmBase : IAlgorithm
     {

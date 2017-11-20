@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib.CandleProviders;
 using BasicAlgorithms;
 using System.Linq;
 using System.IO;
-using FortsRobotLib.AccAggregator;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib.Genetics;
-using FortsRobotLib.ProviderDataCache;
+using ForexRobotLib.AccAggregator;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib.Genetics;
+using ForexRobotLib.ProviderDataCache;
 
 namespace Module.Tests
 {
@@ -20,7 +20,7 @@ namespace Module.Tests
             using (var provider = new TextCandleProvider())
             {
                 provider.SetTextParams("data/si-9-17.dat");
-                var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(provider, 5, 30, 50,
+                var gen = new GeneticsSelector<TextCandleProvider, GuppiAlgorithm>(provider, 5, 30, 50,
                     generationSize: 100);
                 var randomPopulation = gen.GenerateRandomPopulation();
                 Assert.IsTrue(randomPopulation.Length == 100);
@@ -40,7 +40,7 @@ namespace Module.Tests
         {
             using (var provider = new TextCandleProvider())
             {
-                var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(provider, 5, 30, 50);
+                var gen = new GeneticsSelector<TextCandleProvider, GuppiAlgorithm>(provider, 5, 30, 50);
                 float[] child1;
                 float[] child2;
                 gen.Cross(new float[] { 1, 2, 3 }, new float[] { 4, 5, 6 }, out child1, out child2);
@@ -57,7 +57,7 @@ namespace Module.Tests
         {
             using (var provider = new TextCandleProvider())
             {
-                var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(provider, 5, 30, 50);
+                var gen = new GeneticsSelector<TextCandleProvider, GuppiAlgorithm>(provider, 5, 30, 50);
                 var mutatedInd = new float[] { 1, 2, 3, 4 };
                 gen.Mutate(mutatedInd);
                 Assert.IsFalse(mutatedInd.SequenceEqual(new float[] { 1, 2, 3, 4 }));
@@ -70,7 +70,7 @@ namespace Module.Tests
             using (var provider = new TextCandleProvider())
             {
                 provider.SetTextParams(@"data\si-9-17.dat");
-                var gen = new GeneticsSelector<TextCandleProvider, BasicAlgorithm>(new MemoryCache<TextCandleProvider>(provider), 5, 30, 4);
+                var gen = new GeneticsSelector<TextCandleProvider, GuppiAlgorithm>(new MemoryCache<TextCandleProvider>(provider), 5, 30, 4);
                 gen.Select(2);
                 gen.Wait();
                 var bestResults = gen.GetBestResults();

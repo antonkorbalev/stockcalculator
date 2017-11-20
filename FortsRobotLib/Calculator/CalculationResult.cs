@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.AccAggregator;
+using ForexRobotLib.AccAggregator;
 
-namespace FortsRobotLib.Calculator
+namespace ForexRobotLib.Calculator
 {
     public class CalculationResult
     {

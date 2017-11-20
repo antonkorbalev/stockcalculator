@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib;
-using FortsRobotLib.ProviderDataCache;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib;
+using ForexRobotLib.ProviderDataCache;
+using ForexRobotLib.CandleProviders;
 using System.Collections.Generic;
 
 namespace Module.Tests

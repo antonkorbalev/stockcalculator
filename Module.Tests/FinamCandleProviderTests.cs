@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib.CandleProviders;
-using FortsRobotLib;
+using ForexRobotLib.CandleProviders;
+using ForexRobotLib;
 using System.Linq;
 using System.IO;
 

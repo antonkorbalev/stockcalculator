@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib.CandleProviders;
 using BasicAlgorithms;
 using System.Linq;
 using System.IO;
-using FortsRobotLib.AccAggregator;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib.Calculator;
-using FortsRobotLib.ProviderDataCache;
+using ForexRobotLib.AccAggregator;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib.Calculator;
+using ForexRobotLib.ProviderDataCache;
 using System.Threading;
 
 namespace Module.Tests
@@ -20,10 +20,10 @@ namespace Module.Tests
         {
             var p = new TextCandleProvider();
             p.SetTextParams(@"data\si-9-17.dat");
-            var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p, 2);
+            var calc = new Calculator<TextCandleProvider, GuppiAlgorithm>(p, 2);
             IAlgorithm alg;
-            var result = calc.Calculate(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 6, 7, 8,9, 10, 11, 12, 13 }, out alg);
-            Assert.AreEqual(result.Balance, 2379);
+            var result = calc.Calculate(new float[] { 12, 30, 33, 34, 36, 44 }, out alg);
+            Assert.AreEqual(result.Balance, -2383);
             Assert.AreEqual(result.Assets, 0);
             Assert.IsTrue(alg.Data.Length > 0);
         }
@@ -33,7 +33,7 @@ namespace Module.Tests
         {
             var p = new TextCandleProvider();
             p.SetTextParams(@"data\si-9-17.dat");
-            var calc = new Calculator<TextCandleProvider, BasicAlgorithm>(p,4);
+            var calc = new Calculator<TextCandleProvider, GuppiAlgorithm>(p,4);
             calc.AddParamsForCalculation(new float[] { 13, 12, 11, 10, 9, 8, 7, 6, 5 });
             calc.AddParamsForCalculation(new float[] { 5, 5 });
             // just pass

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib;
+using ForexRobotLib.CandleProviders;
 
 namespace Module.Tests
 {

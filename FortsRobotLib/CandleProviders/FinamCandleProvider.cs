@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 
-namespace FortsRobotLib.CandleProviders
+namespace ForexRobotLib.CandleProviders
 {
     public class FinamCandleProvider : BaseTextCandleProvider, ICandleProvider
     {

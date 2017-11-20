@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortsRobotLib", "FortsRobotLib\FortsRobotLib.csproj", "{8EAC99EA-6F96-4629-B383-2A35F85016D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForexRobotLib", "FortsRobotLib\ForexRobotLib.csproj", "{8EAC99EA-6F96-4629-B383-2A35F85016D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Module.Tests", "Module.Tests\Module.Tests.csproj", "{E1D47BCA-CDAC-42A7-AC3E-7D9CFFB5886A}"
 EndProject

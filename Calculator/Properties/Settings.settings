@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DateFrom" Type="System.DateTime" Scope="Application">
-      <Value Profile="(Default)">2017-01-01</Value>
+      <Value Profile="(Default)">2015-05-01</Value>
     </Setting>
     <Setting Name="DateTo" Type="System.DateTime" Scope="Application">
       <Value Profile="(Default)">2017-08-20</Value>
@@ -15,25 +15,25 @@
       <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="ParamsCountTo" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">50</Value>
+      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="GenerationSize" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">150</Value>
     </Setting>
-    <Setting Name="TimePeriod" Type="FortsRobotLib.TimePeriod" Scope="Application">
+    <Setting Name="TimePeriod" Type="ForexRobotLib.TimePeriod" Scope="Application">
       <Value Profile="(Default)">Hour</Value>
     </Setting>
     <Setting Name="ThreadsCount" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="InsName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">SPFB.SI</Value>
+      <Value Profile="(Default)">USD000UTSTOM</Value>
     </Setting>
     <Setting Name="MarketCode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">14</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="InsCode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">19899</Value>
+      <Value Profile="(Default)">182400</Value>
     </Setting>
     <Setting Name="PopulationsCount" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">15</Value>

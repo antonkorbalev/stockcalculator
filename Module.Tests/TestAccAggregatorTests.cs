@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FortsRobotLib;
-using FortsRobotLib.AccAggregator;
+using ForexRobotLib;
+using ForexRobotLib.AccAggregator;
 using System.Linq;
 
 namespace Module.Tests

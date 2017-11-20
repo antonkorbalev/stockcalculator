@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.Genetics;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib.Genetics;
+using ForexRobotLib.CandleProviders;
 using System.IO;
-using FortsRobotLib.ProviderDataCache;
+using ForexRobotLib.ProviderDataCache;
 using Calculator.Properties;
 using System.Reflection;
-using FortsRobotLib.Algorithms;
+using ForexRobotLib.Algorithms;
 using System.Diagnostics;
 
 namespace Calculator

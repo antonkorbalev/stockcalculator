@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FortsRobotLib.AccAggregator
+namespace ForexRobotLib.AccAggregator
 {
     /// <summary>
     /// Account emulator for testing

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.AccAggregator;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib.ProviderDataCache;
-using FortsRobotLib.CandleProviders;
+using ForexRobotLib.AccAggregator;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib.ProviderDataCache;
+using ForexRobotLib.CandleProviders;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 
-namespace FortsRobotLib.Calculator
+namespace ForexRobotLib.Calculator
 {
     public class Calculator<T, T1> : ICalculator<T>, IDisposable
         where T : ICandleProvider

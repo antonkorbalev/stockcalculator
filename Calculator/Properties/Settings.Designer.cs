@@ -25,7 +25,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017-01-01")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2015-05-01")]
         public global::System.DateTime DateFrom {
             get {
                 return ((global::System.DateTime)(this["DateFrom"]));
@@ -61,7 +61,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int ParamsCountTo {
             get {
                 return ((int)(this["ParamsCountTo"]));
@@ -80,9 +80,9 @@ namespace Calculator.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Hour")]
-        public global::FortsRobotLib.TimePeriod TimePeriod {
+        public global::ForexRobotLib.TimePeriod TimePeriod {
             get {
-                return ((global::FortsRobotLib.TimePeriod)(this["TimePeriod"]));
+                return ((global::ForexRobotLib.TimePeriod)(this["TimePeriod"]));
             }
         }
         
@@ -97,7 +97,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SPFB.SI")]
+        [global::System.Configuration.DefaultSettingValueAttribute("USD000UTSTOM")]
         public string InsName {
             get {
                 return ((string)(this["InsName"]));
@@ -106,7 +106,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("14")]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
         public string MarketCode {
             get {
                 return ((string)(this["MarketCode"]));
@@ -115,7 +115,7 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("19899")]
+        [global::System.Configuration.DefaultSettingValueAttribute("182400")]
         public string InsCode {
             get {
                 return ((string)(this["InsCode"]));

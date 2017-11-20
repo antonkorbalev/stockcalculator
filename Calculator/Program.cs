@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.Genetics;
-using FortsRobotLib.CandleProviders;
-using FortsRobotLib;
+using ForexRobotLib.Genetics;
+using ForexRobotLib.CandleProviders;
+using ForexRobotLib;
 using System.IO;
-using FortsRobotLib.ProviderDataCache;
+using ForexRobotLib.ProviderDataCache;
 using Calculator.Properties;
 using System.Reflection;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib.Calculator;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib.Calculator;
 
 namespace Calculator
 {
@@ -84,7 +84,7 @@ namespace Calculator
                     {
                         n++;
                         AlgDataExport.ExportToCSV(r, string.Format("{0}_{1}", 
-                            n, Settings.Default.ResultsFileName), algTypes[num-1].Name);
+                            n, Settings.Default.ResultsFileName), string.Format("{0}, sInd={1}", algTypes[num-1].Name, r.SharpIndex));
                     }
                 }
             }

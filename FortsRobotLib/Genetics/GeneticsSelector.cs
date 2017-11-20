@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.CandleProviders;
-using FortsRobotLib.Algorithms;
-using FortsRobotLib.Calculator;
+using ForexRobotLib.CandleProviders;
+using ForexRobotLib.Algorithms;
+using ForexRobotLib.Calculator;
 using System.Diagnostics;
 using System.Threading;
-using FortsRobotLib.ProviderDataCache;
+using ForexRobotLib.ProviderDataCache;
 
-namespace FortsRobotLib.Genetics
+namespace ForexRobotLib.Genetics
 {
     public class GeneticsSelector<T, T1> : IGeneticsSelector
         where T : ICandleProvider

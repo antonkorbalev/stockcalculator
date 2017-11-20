@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FortsRobotLib.Calculator;
+using ForexRobotLib.Calculator;
 
-namespace FortsRobotLib.Genetics
+namespace ForexRobotLib.Genetics
 {
     public class PopulationCompletedEventArgs : EventArgs
     {
